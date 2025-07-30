@@ -14,8 +14,8 @@ public class AppConfig {
                 .get("/api/mixin", new KillSwitchAHandler())
                 .get("/api/schematic", new KillSwitchBHandler())
 
-                .start(8080);
+                .start(8888);
 
-        Logger.info("Server started");
+        Logger.info("Web server started");
     }
 }

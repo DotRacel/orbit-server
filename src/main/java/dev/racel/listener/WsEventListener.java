@@ -1,0 +1,73 @@
+package dev.racel.listener;
+
+import com.corundumstudio.socketio.AckRequest;
+import com.corundumstudio.socketio.SocketIOClient;
+import com.corundumstudio.socketio.listener.DataListener;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import dev.racel.entity.WsMessage;
+import dev.racel.listener.handler.EventTrigger;
+import dev.racel.listener.handler.OrbitEventHandlerRegistry;
+import org.tinylog.Logger;
+
+public class WsEventListener implements DataListener<String> {
+    private final OrbitEventHandlerRegistry registry;
+    private final ObjectMapper objectMapper;
+
+    public WsEventListener(OrbitEventHandlerRegistry registry, ObjectMapper objectMapper) {
+        this.registry = registry;
+        this.objectMapper = objectMapper;
+    }
+
+    @Override
+    public void onData(SocketIOClient client, String data, AckRequest ackSender) {
+        WsMessage wsMsg = parseWsMessage(data);
+        if (wsMsg == null) return;
+
+        String eventName = wsMsg.getName();
+        OrbitEventHandlerRegistry.HandlerEntry<?> entry = registry.getHandlerEntry(eventName);
+        if (entry == null) {
+            Logger.warn("Event {} is not registered: {}", eventName, data);
+            return;
+        }
+
+        Object eventData = parseEventData(wsMsg.getValues(), entry.getDataType(), eventName);
+        if (eventData == null) return;
+
+        executeHandler(entry, eventName, eventData, client);
+    }
+
+    private WsMessage parseWsMessage(String data) {
+        try {
+            return objectMapper.readValue(data, WsMessage.class);
+        } catch (JsonProcessingException e) {
+            Logger.error( "Failed to parse event message: {}", data);
+            return null;
+        }
+    }
+
+    private Object parseEventData(ObjectNode values, Class<?> dataType, String eventName) {
+        try {
+            return objectMapper.convertValue(values, dataType);
+        }catch (IllegalArgumentException e) {
+            Logger.error( e, "Failed to parse event {} data: {}", eventName, values);
+            return null;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void executeHandler(OrbitEventHandlerRegistry.HandlerEntry<?> entry,
+                                String eventName, Object eventData,
+                                SocketIOClient client) {
+        try {
+            OrbitEventHandlerRegistry.HandlerEntry<Object> typedEntry =
+                    (OrbitEventHandlerRegistry.HandlerEntry<Object>) entry;
+            EventTrigger trigger = new EventTrigger(client);
+            typedEntry.getHandler().handle(trigger, eventData);
+            Logger.debug("Event {} parsed. Data: {}", eventName, eventData);
+        } catch (Exception e) {
+            Logger.error(e, "Event {} failed to parse. Data: {}", eventName, eventData);
+        }
+    }
+}
