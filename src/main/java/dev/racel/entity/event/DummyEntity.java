@@ -1,3 +1,3 @@
-package dev.racel.entity;
+package dev.racel.entity.event;
 
 public class DummyEntity {}

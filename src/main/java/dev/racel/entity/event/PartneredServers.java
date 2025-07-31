@@ -1,4 +1,4 @@
-package dev.racel.entity;
+package dev.racel.entity.event;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;

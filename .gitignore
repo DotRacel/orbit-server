@@ -4,6 +4,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 log.txt
+orbit.db
 
 ### IntelliJ IDEA ###
 .idea/

@@ -1,6 +1,7 @@
 package dev.racel;
 
 import dev.racel.config.AppConfig;
+import dev.racel.config.DbConfig;
 import dev.racel.config.WsConfig;
 import dev.racel.entity.event.ServerVersion;
 
@@ -9,9 +10,11 @@ public class OrbitServerMain {
 
     private static AppConfig appConfig;
     private static WsConfig wsConfig;
+    private static DbConfig dbConfig;
 
     public static void main(String[] args) {
-        appConfig = new AppConfig();
-        wsConfig = new WsConfig();
+        appConfig = AppConfig.getInstance();
+        wsConfig = WsConfig.getInstance();
+        dbConfig = DbConfig.getInstance();
     }
 }

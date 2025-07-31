@@ -12,7 +12,9 @@ import dev.racel.listener.handler.OrbitEventHandlerRegistry;
 import dev.racel.listener.handler.impl.*;
 
 public class WsConfig {
-    public WsConfig() {
+    private static WsConfig INSTANCE;
+
+    private WsConfig() {
         Configuration config = new Configuration();
         config.setHostname("localhost");
         config.setPort(8080);
@@ -35,5 +37,12 @@ public class WsConfig {
                 new WsEventListener(registry, new ObjectMapper()));
         server.addDisconnectListener(new WsDisconnectListener());
         server.start();
+    }
+
+    public static WsConfig getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new WsConfig();
+        }
+        return INSTANCE;
     }
 }
