@@ -1,8 +1,8 @@
 package dev.racel.listener.handler.impl;
 
 import dev.racel.entity.event.PlayerUUID;
-import dev.racel.listener.handler.EventTrigger;
 import dev.racel.listener.handler.OrbitEventHandler;
+import dev.racel.session.Session;
 
 public class GetPlayerCosmeticsEventHandler implements OrbitEventHandler<PlayerUUID> {
     @Override
@@ -11,7 +11,7 @@ public class GetPlayerCosmeticsEventHandler implements OrbitEventHandler<PlayerU
     }
 
     @Override
-    public void handle(EventTrigger trigger, PlayerUUID data) {
+    public void handle(Session session, PlayerUUID data) {
 
     }
 }

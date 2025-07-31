@@ -7,17 +7,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.racel.entity.event.WsMessage;
-import dev.racel.listener.handler.EventTrigger;
 import dev.racel.listener.handler.OrbitEventHandlerRegistry;
+import dev.racel.session.SessionManager;
 import org.tinylog.Logger;
 
 public class WsEventListener implements DataListener<String> {
+    private final SessionManager sessionManager;
     private final OrbitEventHandlerRegistry registry;
     private final ObjectMapper objectMapper;
 
-    public WsEventListener(OrbitEventHandlerRegistry registry, ObjectMapper objectMapper) {
+    public WsEventListener(OrbitEventHandlerRegistry registry, ObjectMapper objectMapper, SessionManager sessionManager) {
         this.registry = registry;
         this.objectMapper = objectMapper;
+        this.sessionManager = sessionManager;
     }
 
     @Override
@@ -63,8 +65,7 @@ public class WsEventListener implements DataListener<String> {
         try {
             OrbitEventHandlerRegistry.HandlerEntry<Object> typedEntry =
                     (OrbitEventHandlerRegistry.HandlerEntry<Object>) entry;
-            EventTrigger trigger = new EventTrigger(client);
-            typedEntry.getHandler().handle(trigger, eventData);
+            typedEntry.getHandler().handle(sessionManager.getSessionByUuid(client.getSessionId().toString()).orElseThrow(), eventData);
             Logger.debug("Event {} parsed. Data: {}", eventName, eventData);
         } catch (Exception e) {
             Logger.error(e, "Event {} failed to parse. Data: {}", eventName, eventData);

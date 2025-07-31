@@ -19,7 +19,7 @@ public class AppConfig {
 
                 .start(8888);
 
-        Logger.info("Web server started");
+        Logger.info("Web server initialized");
     }
 
     public static AppConfig getInstance() {

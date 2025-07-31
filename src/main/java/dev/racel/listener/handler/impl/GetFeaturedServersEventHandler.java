@@ -1,8 +1,8 @@
 package dev.racel.listener.handler.impl;
 
 import dev.racel.entity.event.DummyEntity;
-import dev.racel.listener.handler.EventTrigger;
 import dev.racel.listener.handler.OrbitEventHandler;
+import dev.racel.session.Session;
 
 public class GetFeaturedServersEventHandler implements OrbitEventHandler<DummyEntity> {
 
@@ -12,7 +12,7 @@ public class GetFeaturedServersEventHandler implements OrbitEventHandler<DummyEn
     }
 
     @Override
-    public void handle(EventTrigger trigger, DummyEntity data) {
+    public void handle(Session session, DummyEntity data) {
 
     }
 }

@@ -1,6 +1,8 @@
 package dev.racel.listener.handler;
 
+import dev.racel.session.Session;
+
 public interface OrbitEventHandler<T> {
     String getName();
-    void handle(EventTrigger trigger, T data);
+    void handle(Session session, T data);
 }

@@ -10,9 +10,15 @@ import dev.racel.listener.WsDisconnectListener;
 import dev.racel.listener.WsEventListener;
 import dev.racel.listener.handler.OrbitEventHandlerRegistry;
 import dev.racel.listener.handler.impl.*;
+import dev.racel.listener.handler.impl.verify.ClientInfoEventHandler;
+import dev.racel.listener.handler.impl.verify.IsVerifiedEventHandler;
+import dev.racel.listener.handler.impl.verify.VerifyEventHandler;
+import dev.racel.session.SessionManager;
+import org.tinylog.Logger;
 
 public class WsConfig {
     private static WsConfig INSTANCE;
+    public static ObjectMapper mapper = new ObjectMapper();
 
     private WsConfig() {
         Configuration config = new Configuration();
@@ -26,17 +32,22 @@ public class WsConfig {
         OrbitEventHandlerRegistry registry = new OrbitEventHandlerRegistry();
         registry.register(new ClientInfoEventHandler());
         registry.register(new IsVerifiedEventHandler());
+        registry.register(new VerifyEventHandler());
         registry.register(new GetFeaturedServersEventHandler());
         registry.register(new GetPlayerCosmeticsEventHandler());
         registry.register(new GetAllCosmeticsEventHandler());
 
         SocketIOServer server = new SocketIOServer(config);
-        server.addConnectListener(new WsConnectListener());
+        SessionManager sessionManager = new SessionManager();
+
+        server.addConnectListener(new WsConnectListener(sessionManager));
         server.addEventListener("event",
                 String.class,
-                new WsEventListener(registry, new ObjectMapper()));
-        server.addDisconnectListener(new WsDisconnectListener());
+                new WsEventListener(registry, mapper, sessionManager));
+        server.addDisconnectListener(new WsDisconnectListener(sessionManager));
         server.start();
+
+        Logger.info("Websocket server initialized");
     }
 
     public static WsConfig getInstance() {

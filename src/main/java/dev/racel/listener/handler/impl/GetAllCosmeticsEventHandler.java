@@ -1,7 +1,7 @@
 package dev.racel.listener.handler.impl;
 
-import dev.racel.listener.handler.EventTrigger;
 import dev.racel.listener.handler.OrbitEventHandler;
+import dev.racel.session.Session;
 
 public class GetAllCosmeticsEventHandler implements OrbitEventHandler<Object> {
     @Override
@@ -10,7 +10,7 @@ public class GetAllCosmeticsEventHandler implements OrbitEventHandler<Object> {
     }
 
     @Override
-    public void handle(EventTrigger trigger, Object data) {
+    public void handle(Session session, Object data) {
 
     }
 }

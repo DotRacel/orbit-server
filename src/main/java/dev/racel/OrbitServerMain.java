@@ -13,8 +13,8 @@ public class OrbitServerMain {
     private static DbConfig dbConfig;
 
     public static void main(String[] args) {
+        dbConfig = DbConfig.getInstance();
         appConfig = AppConfig.getInstance();
         wsConfig = WsConfig.getInstance();
-        dbConfig = DbConfig.getInstance();
     }
 }
