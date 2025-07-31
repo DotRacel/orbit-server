@@ -1,6 +1,6 @@
 package dev.racel.listener.handler.impl;
 
-import dev.racel.entity.ClientInfo;
+import dev.racel.entity.event.ClientInfo;
 import dev.racel.listener.handler.EventTrigger;
 import dev.racel.listener.handler.OrbitEventHandler;
 

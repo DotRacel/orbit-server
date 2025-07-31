@@ -1,6 +1,6 @@
 package dev.racel.listener.handler.impl;
 
-import dev.racel.entity.PlayerUUID;
+import dev.racel.entity.event.PlayerUUID;
 import dev.racel.listener.handler.EventTrigger;
 import dev.racel.listener.handler.OrbitEventHandler;
 

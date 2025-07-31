@@ -6,7 +6,7 @@ import com.corundumstudio.socketio.listener.DataListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import dev.racel.entity.WsMessage;
+import dev.racel.entity.event.WsMessage;
 import dev.racel.listener.handler.EventTrigger;
 import dev.racel.listener.handler.OrbitEventHandlerRegistry;
 import org.tinylog.Logger;
