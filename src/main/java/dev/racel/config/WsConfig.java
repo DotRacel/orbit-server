@@ -10,6 +10,9 @@ import dev.racel.listener.WsDisconnectListener;
 import dev.racel.listener.WsEventListener;
 import dev.racel.listener.handler.OrbitEventHandlerRegistry;
 import dev.racel.listener.handler.impl.*;
+import dev.racel.listener.handler.impl.cosmetics.GetAllCosmeticsEventHandler;
+import dev.racel.listener.handler.impl.cosmetics.GetPlayerCosmeticsEventHandler;
+import dev.racel.listener.handler.impl.group.*;
 import dev.racel.listener.handler.impl.profile.SaveProfileEventHandler;
 import dev.racel.listener.handler.impl.profile.UseProfileEventHandler;
 import dev.racel.listener.handler.impl.verify.ClientInfoEventHandler;
@@ -39,9 +42,18 @@ public class WsConfig {
         registry.register(new SaveProfileEventHandler());
         registry.register(new UseProfileEventHandler());
 
+        registry.register(new GroupCreateEventHandler());
+        registry.register(new GroupJoinEventHandler());
+        registry.register(new GetSelectedGroupEventHandler());
+        registry.register(new SetSelectedGroupEventHandler());
+        registry.register(new GroupGetAllEventHandler());
+        registry.register(new GroupJoinEventHandler());
+        registry.register(new GetSelectedGroupMembersEventHandler());
+
         registry.register(new GetFeaturedServersEventHandler());
         registry.register(new GetPlayerCosmeticsEventHandler());
         registry.register(new GetAllCosmeticsEventHandler());
+        registry.register(new GetSelectedTagsEventHandler());
 
         SocketIOServer server = new SocketIOServer(config);
         SessionManager sessionManager = new SessionManager();

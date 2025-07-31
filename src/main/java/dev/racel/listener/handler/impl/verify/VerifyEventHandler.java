@@ -8,6 +8,7 @@ import dev.racel.entity.event.VerifyMessage;
 import dev.racel.entity.event.VerifySuccessMessage;
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.session.Session;
+import dev.racel.util.UserUtil;
 import org.tinylog.Logger;
 
 public class VerifyEventHandler implements OrbitEventHandler<VerifyMessage> {
@@ -27,14 +28,9 @@ public class VerifyEventHandler implements OrbitEventHandler<VerifyMessage> {
             session.sendMessage("isVerified",
                     new IsVerifiedMessage(true));
             session.sendMessage("verify", new VerifySuccessMessage("Success"));
-            if(clientInfoOpt.isPresent()) {
-                var clientInfo = clientInfoOpt.get();
-                user.setHwid(clientInfo.getHwid());
-                user.setLast_ign(clientInfo.getInGameName());
-                user.setLast_uuid(clientInfo.getUUID());
-                user.setLast_version(clientInfo.getVersion());
-            }
+            clientInfoOpt.ifPresent(clientInfo -> UserUtil.updateUserByClientInfo(user, clientInfo));
             userDAO.updateUser(user);
+            Logger.info("User {} is verified successfully. ", user.getName());
         }else {
             Logger.error( "Purchase id not found: {}", data.getOrbitProductID());
             session.sendMessage("verify", new VerifyErrorMessage("Purchase id not found"));

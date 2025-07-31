@@ -7,6 +7,7 @@ import dev.racel.entity.event.IsVerifiedMessage;
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.session.Session;
 import dev.racel.util.UserUtil;
+import org.tinylog.Logger;
 
 public class ClientInfoEventHandler implements OrbitEventHandler<ClientInfo> {
     private final UserDAO userDAO = DbConfig.getInstance().getUserDAO();
@@ -22,6 +23,12 @@ public class ClientInfoEventHandler implements OrbitEventHandler<ClientInfo> {
 
         if (data.getPurchaseID() == null) return;
         var userOpt = userDAO.getUserByPurchaseId(data.getPurchaseID());
+        if(userOpt.isEmpty()) {
+            Logger.info("User {} provided an invalid purchase id {}",
+                    session.getClient().getSessionId(),
+                    data.getPurchaseID());
+            return;
+        }
         var user = userOpt.get();
         var clientInfoOpt = session.getClientInfo();
         session.setOrbitUser(user);
@@ -29,5 +36,6 @@ public class ClientInfoEventHandler implements OrbitEventHandler<ClientInfo> {
                 new IsVerifiedMessage(true));
         clientInfoOpt.ifPresent(clientInfo -> UserUtil.updateUserByClientInfo(user, clientInfo));
         userDAO.updateUser(user);
+        Logger.info("User {} is verified successfully. ", user.getName());
     }
 }

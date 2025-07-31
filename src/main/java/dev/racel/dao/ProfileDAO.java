@@ -2,7 +2,6 @@ package dev.racel.dao;
 
 import dev.racel.entity.Profile;
 import dev.racel.mapper.ProfileMapper;
-import org.jdbi.v3.sqlobject.config.RegisterConstructorMapper;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
@@ -16,7 +15,8 @@ public interface ProfileDAO {
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 profile_id CHAR(10) NOT NULL,
                 owner varchar(100) NOT NULL,
-                content text NOT NULL
+                content text NOT NULL,
+                FOREIGN KEY (owner) REFERENCES users(name)
             )""")
     void createTable();
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.racel.config.WsConfig;
 import dev.racel.entity.OrbitUser;
+import dev.racel.entity.event.ChatMessage;
 import dev.racel.entity.event.ClientInfo;
 import dev.racel.entity.event.WsMessage;
 import dev.racel.entity.event.WsRawMessage;
@@ -48,5 +49,9 @@ public class Session {
         } catch (JsonProcessingException e) {
             Logger.error( "Failed to send event: {}", e.getMessage());
         }
+    }
+
+    public void sendChat(String text) {
+        sendMessage("doChat", new ChatMessage(text));
     }
 }

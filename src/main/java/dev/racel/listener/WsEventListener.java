@@ -70,6 +70,7 @@ public class WsEventListener implements DataListener<String> {
         try {
             OrbitEventHandlerRegistry.HandlerEntry<Object> typedEntry =
                     (OrbitEventHandlerRegistry.HandlerEntry<Object>) entry;
+            //TODO: Do intercept for unverified users.
             typedEntry.getHandler().handle(sessionManager.getSessionByUuid(client.getSessionId().toString()).orElseThrow(), eventData);
             Logger.debug("Event {} parsed. Data: {}", eventName, eventData);
         } catch (Exception e) {

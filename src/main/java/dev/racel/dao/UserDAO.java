@@ -7,6 +7,7 @@ import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserDAO {
@@ -18,8 +19,10 @@ public interface UserDAO {
                 hwid VARCHAR(100),
                 last_ign varchar(100),
                 last_uuid varchar(100),
-                last_version varchar(20)
-            )""")
+                last_version varchar(20),
+                selected_group varchar(50),
+                FOREIGN KEY (selected_group) REFERENCES groups(group_name)
+            );""")
     void createTable();
 
     @SqlUpdate("""
@@ -41,6 +44,9 @@ public interface UserDAO {
             """)
     @RegisterRowMapper(UserMapper.class)
     Optional<OrbitUser> getUserByPurchaseId(String purchase_id);
+
+    @SqlQuery("SELECT selected_group from users WHERE name=?")
+    String getSelectedGroupByName(String name);
 
     @SqlUpdate("""
             UPDATE users SET name = :user.name, 

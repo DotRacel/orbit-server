@@ -16,6 +16,7 @@ public class UserMapper implements RowMapper<OrbitUser> {
                 rs.getString("hwid"),
                 rs.getString("last_ign"),
                 rs.getString("last_uuid"),
-                rs.getString("last_version"));
+                rs.getString("last_version"),
+                rs.getString("selected_group"));
     }
 }

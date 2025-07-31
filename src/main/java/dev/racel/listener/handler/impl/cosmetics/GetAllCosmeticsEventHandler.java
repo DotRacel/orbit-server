@@ -1,4 +1,4 @@
-package dev.racel.listener.handler.impl;
+package dev.racel.listener.handler.impl.cosmetics;
 
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.session.Session;
