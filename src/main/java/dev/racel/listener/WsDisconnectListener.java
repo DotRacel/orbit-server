@@ -3,7 +3,7 @@ package dev.racel.listener;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import dev.racel.session.SessionManager;
-import lombok.AllArgsConstructor;
+import org.tinylog.Logger;
 
 public class WsDisconnectListener implements DisconnectListener {
     private SessionManager sessionManager;
@@ -14,6 +14,7 @@ public class WsDisconnectListener implements DisconnectListener {
 
     @Override
     public void onDisconnect(SocketIOClient client) {
-
+        Logger.info("Client {} disconnected", client.getSessionId());
+        sessionManager.removeSessionByUuid(client.getSessionId().toString());
     }
 }

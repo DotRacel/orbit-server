@@ -13,6 +13,6 @@ public class IsVerifiedEventHandler implements OrbitEventHandler<Object> {
     @Override
     public void handle(Session session, Object data) {
         session.sendMessage("isVerified",
-                new IsVerifiedMessage(session.getOrbitUser() != null));
+                new IsVerifiedMessage(session.getOrbitUser().isPresent()));
     }
 }

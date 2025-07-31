@@ -5,7 +5,6 @@ import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.UUID;
 
 public class SessionManager {
     @Getter
@@ -19,9 +18,12 @@ public class SessionManager {
         return Optional.ofNullable(sessions.get(uuid));
     }
 
-    public Session createSession(SocketIOClient client) {
+    public void createSession(SocketIOClient client) {
         var session = new Session(client);
         this.sessions.put(client.getSessionId().toString(), session);
-        return session;
+    }
+
+    public void removeSessionByUuid(String uuid) {
+        sessions.remove(uuid);
     }
 }

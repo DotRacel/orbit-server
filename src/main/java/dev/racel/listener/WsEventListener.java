@@ -34,7 +34,12 @@ public class WsEventListener implements DataListener<String> {
             return;
         }
 
-        Object eventData = parseEventData(wsMsg.getValues(), entry.getDataType(), eventName);
+        Object eventData;
+        if(entry.getDataType() == String.class){
+            eventData = wsMsg.getValues().toString();
+        }else {
+            eventData = parseEventData(wsMsg.getValues(), entry.getDataType(), eventName);
+        }
         if (eventData == null) return;
 
         executeHandler(entry, eventName, eventData, client);
@@ -68,7 +73,7 @@ public class WsEventListener implements DataListener<String> {
             typedEntry.getHandler().handle(sessionManager.getSessionByUuid(client.getSessionId().toString()).orElseThrow(), eventData);
             Logger.debug("Event {} parsed. Data: {}", eventName, eventData);
         } catch (Exception e) {
-            Logger.error(e, "Event {} failed to parse. Data: {}", eventName, eventData);
+            Logger.error(e, "Event {} failed to handle. Data: {}", eventName, eventData);
         }
     }
 }

@@ -22,12 +22,13 @@ public class VerifyEventHandler implements OrbitEventHandler<VerifyMessage> {
         var userOpt = userDAO.getUserByPurchaseId(data.getOrbitProductID());
         if (userOpt.isPresent()) {
             var user = userOpt.get();
-            var clientInfo = session.getClientInfo();
+            var clientInfoOpt = session.getClientInfo();
             session.setOrbitUser(user);
             session.sendMessage("isVerified",
                     new IsVerifiedMessage(true));
             session.sendMessage("verify", new VerifySuccessMessage("Success"));
-            if(clientInfo != null) {
+            if(clientInfoOpt.isPresent()) {
+                var clientInfo = clientInfoOpt.get();
                 user.setHwid(clientInfo.getHwid());
                 user.setLast_ign(clientInfo.getInGameName());
                 user.setLast_uuid(clientInfo.getUUID());

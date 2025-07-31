@@ -7,9 +7,11 @@ import dev.racel.config.WsConfig;
 import dev.racel.entity.OrbitUser;
 import dev.racel.entity.event.ClientInfo;
 import dev.racel.entity.event.WsMessage;
-import lombok.AllArgsConstructor;
+import dev.racel.entity.event.WsRawMessage;
 import lombok.Data;
 import org.tinylog.Logger;
+
+import java.util.Optional;
 
 @Data
 public class Session {
@@ -21,9 +23,26 @@ public class Session {
     OrbitUser orbitUser;
     ClientInfo clientInfo;
 
+    public Optional<ClientInfo> getClientInfo() {
+        return Optional.ofNullable(clientInfo);
+    }
+
+    public Optional<OrbitUser> getOrbitUser() {
+        return Optional.ofNullable(orbitUser);
+    }
+
     public void sendMessage(String eventName, Object data) {
         var msg = new WsMessage(eventName,
                 WsConfig.mapper.convertValue(data, ObjectNode.class));
+        try {
+            client.sendEvent("event", WsConfig.mapper.writeValueAsString(msg));
+        } catch (JsonProcessingException e) {
+            Logger.error( "Failed to send event: {}", e.getMessage());
+        }
+    }
+
+    public void sendMessage(String eventName, String data) {
+        var msg = new WsRawMessage(eventName, data);
         try {
             client.sendEvent("event", WsConfig.mapper.writeValueAsString(msg));
         } catch (JsonProcessingException e) {

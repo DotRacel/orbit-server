@@ -10,6 +10,8 @@ import dev.racel.listener.WsDisconnectListener;
 import dev.racel.listener.WsEventListener;
 import dev.racel.listener.handler.OrbitEventHandlerRegistry;
 import dev.racel.listener.handler.impl.*;
+import dev.racel.listener.handler.impl.profile.SaveProfileEventHandler;
+import dev.racel.listener.handler.impl.profile.UseProfileEventHandler;
 import dev.racel.listener.handler.impl.verify.ClientInfoEventHandler;
 import dev.racel.listener.handler.impl.verify.IsVerifiedEventHandler;
 import dev.racel.listener.handler.impl.verify.VerifyEventHandler;
@@ -33,6 +35,10 @@ public class WsConfig {
         registry.register(new ClientInfoEventHandler());
         registry.register(new IsVerifiedEventHandler());
         registry.register(new VerifyEventHandler());
+
+        registry.register(new SaveProfileEventHandler());
+        registry.register(new UseProfileEventHandler());
+
         registry.register(new GetFeaturedServersEventHandler());
         registry.register(new GetPlayerCosmeticsEventHandler());
         registry.register(new GetAllCosmeticsEventHandler());
