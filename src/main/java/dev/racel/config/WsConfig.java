@@ -47,7 +47,6 @@ public class WsConfig {
         registry.register(new GetSelectedGroupEventHandler());
         registry.register(new SetSelectedGroupEventHandler());
         registry.register(new GroupGetAllEventHandler());
-        registry.register(new GroupJoinEventHandler());
         registry.register(new GetSelectedGroupMembersEventHandler());
 
         registry.register(new GetFeaturedServersEventHandler());

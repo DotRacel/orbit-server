@@ -4,7 +4,6 @@ import dev.racel.entity.Group;
 import dev.racel.mapper.GroupMapper;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
-import org.jdbi.v3.sqlobject.statement.SqlBatch;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
@@ -32,9 +31,9 @@ public interface GroupDAO {
             group_id INT NOT NULL,
             user_name varchar(100) NOT NULL,
             role_name varchar(50) NOT NULL,
-            FOREIGN KEY (group_id) REFERENCES groups(id),
-            FOREIGN KEY (user_name) REFERENCES users(name),
-            FOREIGN KEY (role_name) REFERENCES group_roles(role_name));
+            FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE,
+            FOREIGN KEY (user_name) REFERENCES users(name) ON DELETE CASCADE,
+            FOREIGN KEY (role_name) REFERENCES group_roles(role_name) ON DELETE CASCADE);
 """)
     void createGroupMembersTable();
 
@@ -43,8 +42,8 @@ public interface GroupDAO {
             group_id INT NOT NULL,
             role_name varchar(50) NOT NULL,
             permission varchar(20) NOT NULL,
-            FOREIGN KEY (group_id) REFERENCES groups(id),
-            FOREIGN KEY (role_name) REFERENCES group_roles(role_name));
+            FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE,
+            FOREIGN KEY (role_name) REFERENCES group_roles(role_name) ON DELETE CASCADE);
 """)
     void createGroupRolePermissionsTable();
 
@@ -53,24 +52,18 @@ public interface GroupDAO {
             id INT AUTO_INCREMENT PRIMARY KEY,
             group_id INT NOT NULL,
             message TEXT NOT NULL,
-            FOREIGN KEY (group_id) REFERENCES groups(id));
+            FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE);
 """)
     void createGroupLogsTable();
 
-    @SqlQuery("""
-        SELECT * FROM groups WHERE group_name = ?
-""")
+    @SqlQuery("SELECT * FROM groups WHERE group_name = ?")
     @RegisterRowMapper(GroupMapper.class)
     Optional<Group> getGroupByName(String name);
 
-    @SqlUpdate("""
-        INSERT INTO groups(group_name, password) VALUES(:group.groupName, :group.password);
-""")
+    @SqlUpdate("INSERT INTO groups(group_name, password) VALUES(:group.groupName, :group.password);")
     void createGroup(@BindBean("group") Group group);
 
-    @SqlUpdate("""
-        INSERT INTO group_roles(group_id, role_name) VALUES(?, ?)
-""")
+    @SqlUpdate("INSERT INTO group_roles(group_id, role_name) VALUES(?, ?)")
     void addGroupRole(String groupId, String roleName);
 
     @SqlUpdate("INSERT INTO group_role_permissions(group_id, role_name, permission) VALUES(?, ?, ?)")
@@ -85,17 +78,17 @@ public interface GroupDAO {
     @SqlQuery("SELECT permission FROM group_role_permissions WHERE group_id = ? AND role_name = ?")
     List<String> getGroupRolePermissions(int groupId, String roleName);
 
-    @SqlUpdate("""
-        DELETE FROM group_logs WHERE group_id = ?;
-        DELETE FROM group_role_permissions WHERE group_id = ?;
-        DELETE FROM group_members WHERE group_id = ?;
-        DELETE FROM group_roles WHERE group_id = ?;
-        DELETE FROM groups WHERE id = ?;
-    """)
+    @SqlUpdate("DELETE FROM group_logs WHERE group_id = ?;")
     void removeGroup(int groupId);
 
     @SqlUpdate("INSERT INTO group_logs(group_id, message) VALUES(?, ?)")
     void addGroupLog(int groupId, String message);
+
+    @SqlUpdate("INSERT INTO group_roles(group_id, role_name) VALUES(?, ?)")
+    void addGroupRole(int groupId, String roleName);
+
+    @SqlUpdate("DELETE FROM group_roles WHERE group_id = ? AND role_name = ?")
+    void removeGroupRole(int groupId, String roleName);
 
     @SqlQuery("SELECT message FROM group_logs WHERE group_id = ?")
     List<String> getGroupLogs(int groupId);
@@ -110,4 +103,10 @@ public interface GroupDAO {
         WHERE m.user_name = ?
     """)
     List<String> getUserGroupNames(String userName);
+
+    @SqlUpdate("INSERT INTO group_members(group_id, user_name, role_name) VALUES (?, ?, ?)")
+    void addGroupMember(int groupId, String userName, String role_name);
+
+    @SqlUpdate("DELETE FROM group_members WHERE group_id = ? AND user_name = ?")
+    void deleteGroupMember(int groupId, String userName);
 }
