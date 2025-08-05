@@ -1,8 +1,7 @@
 package dev.racel.config;
 
-import dev.racel.handler.*;
+import dev.racel.handler.api.*;
 import io.javalin.Javalin;
-import jdk.jshell.ImportSnippet;
 import org.tinylog.Logger;
 
 public class AppConfig {

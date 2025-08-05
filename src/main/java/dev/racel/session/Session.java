@@ -6,11 +6,10 @@ import dev.racel.config.WsConfig;
 import dev.racel.entity.OrbitUser;
 import dev.racel.entity.message.ChatMessage;
 import dev.racel.entity.message.ClientInfoMessage;
-import dev.racel.entity.WsMessage;
+import dev.racel.entity.message.WsMessage;
 import lombok.Data;
 import org.tinylog.Logger;
 
-import java.util.List;
 import java.util.Optional;
 
 @Data
