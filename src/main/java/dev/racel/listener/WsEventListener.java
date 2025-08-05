@@ -7,13 +7,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.racel.entity.WsMessage;
 import dev.racel.listener.handler.OrbitEventHandlerRegistry;
+import dev.racel.listener.handler.impl.verify.ClientInfoEventHandler;
+import dev.racel.listener.handler.impl.verify.IsVerifiedEventHandler;
+import dev.racel.listener.handler.impl.verify.VerifyEventHandler;
 import dev.racel.session.SessionManager;
 import org.tinylog.Logger;
+
+import java.util.List;
 
 public class WsEventListener implements DataListener<String> {
     private final SessionManager sessionManager;
     private final OrbitEventHandlerRegistry registry;
     private final ObjectMapper objectMapper;
+
+    private final List<String> verifyWhitelist = List.of(
+            "clnti",
+            "isVerified",
+            "verify"
+    );
 
     public WsEventListener(OrbitEventHandlerRegistry registry, ObjectMapper objectMapper, SessionManager sessionManager) {
         this.registry = registry;
@@ -67,10 +78,15 @@ public class WsEventListener implements DataListener<String> {
                                 String eventName, Object eventData,
                                 SocketIOClient client) {
         try {
-            OrbitEventHandlerRegistry.HandlerEntry<Object> typedEntry =
-                    (OrbitEventHandlerRegistry.HandlerEntry<Object>) entry;
-            //TODO: Do intercept for unverified users.
-            typedEntry.getHandler().handle(sessionManager.getSessionByUuid(client.getSessionId().toString()).orElseThrow(), eventData);
+            var typedEntry = (OrbitEventHandlerRegistry.HandlerEntry<Object>) entry;
+            var session = sessionManager.getSessionByUuid(client.getSessionId().toString()).orElseThrow();
+
+            if(!verifyWhitelist.contains(eventName) && !session.isVerified()){
+                Logger.error("Unauthorized user attempted to trigger verify needed event {}", eventName);
+                return;
+            }
+
+            typedEntry.getHandler().handle(session, eventData);
             Logger.debug("Event {} parsed. Data: {}", eventName, eventData);
         } catch (Exception e) {
             Logger.error(e, "Event {} failed to handle. Data: {}", eventName, eventData);

@@ -37,6 +37,7 @@ public class ClientInfoEventHandler implements OrbitEventHandler<ClientInfoMessa
                 new IsVerifiedMessage(true));
         clientInfoOpt.ifPresent(clientInfoMessage -> UserUtil.updateUserByClientInfo(user, clientInfoMessage));
         userDAO.updateUser(user);
+        session.setVerified(true);
 
         new GroupGetAllEventHandler().handle(session, data);
 

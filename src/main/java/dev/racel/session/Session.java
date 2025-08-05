@@ -10,6 +10,7 @@ import dev.racel.entity.WsMessage;
 import lombok.Data;
 import org.tinylog.Logger;
 
+import java.util.List;
 import java.util.Optional;
 
 @Data
@@ -21,6 +22,7 @@ public class Session {
     SocketIOClient client;
     OrbitUser orbitUser;
     ClientInfoMessage clientInfoMessage;
+    boolean verified;
 
     public Optional<ClientInfoMessage> getClientInfoMessage() {
         return Optional.ofNullable(clientInfoMessage);
