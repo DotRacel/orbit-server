@@ -19,12 +19,6 @@ public class SaveProfileEventHandler implements OrbitEventHandler<String> {
     public void handle(Session session, String data) {
         var user = session.getOrbitUser().get();
 
-        if(!JsonUtil.isValidJson(data)) {
-            Logger.error("Invalid json received from user {}, partial data: {}",
-                    user.getName(), data.substring(0, 64));
-            return;
-        }
-
         Profile profile = new Profile(
                 RandomStringUtils.insecure().nextAlphabetic(10),
                 user.getName(),
