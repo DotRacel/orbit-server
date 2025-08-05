@@ -23,7 +23,8 @@ public class WsEventListener implements DataListener<String> {
     private final List<String> verifyWhitelist = List.of(
             "clnti",
             "isVerified",
-            "verify"
+            "verify",
+            "getFeaturedServers"
     );
 
     public WsEventListener(OrbitEventHandlerRegistry registry, ObjectMapper objectMapper, SessionManager sessionManager) {
