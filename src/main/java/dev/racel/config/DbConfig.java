@@ -2,6 +2,7 @@ package dev.racel.config;
 
 import dev.racel.dao.GroupDAO;
 import dev.racel.dao.ProfileDAO;
+import dev.racel.dao.SchemDAO;
 import dev.racel.dao.UserDAO;
 import lombok.Getter;
 import org.jdbi.v3.core.Jdbi;
@@ -17,20 +18,29 @@ public class DbConfig {
     ProfileDAO profileDAO;
     @Getter
     GroupDAO groupDAO;
+    @Getter
+    SchemDAO schemDAO;
 
     public DbConfig() {
         Jdbi jdbi = Jdbi.create("jdbc:sqlite:orbit.db");
         jdbi.installPlugin(new SqlObjectPlugin());
         this.userDAO = jdbi.onDemand(UserDAO.class);
         this.userDAO.createTable();
+
         this.profileDAO = jdbi.onDemand(ProfileDAO.class);
         this.profileDAO.createTable();
+
         this.groupDAO = jdbi.onDemand(GroupDAO.class);
         this.groupDAO.createGroupsTable();
         this.groupDAO.createGroupLogsTable();
         this.groupDAO.createGroupMembersTable();
         this.groupDAO.createGroupRolesTable();
         this.groupDAO.createGroupRolePermissionsTable();
+        this.groupDAO.createGroupSchematicsTable();
+
+        this.schemDAO = jdbi.onDemand(SchemDAO.class);
+        this.schemDAO.createTable();
+
 
         Logger.info("Database initialized");
     }

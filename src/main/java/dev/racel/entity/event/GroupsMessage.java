@@ -9,6 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class AllGroupsMessage {
-    List<String> groups;
+public class GroupsMessage {
+    List<GroupInfoMessage> groups;
 }

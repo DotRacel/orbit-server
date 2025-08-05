@@ -25,14 +25,22 @@ public class SetSelectedGroupEventHandler implements OrbitEventHandler<GroupMess
         }
 
         var group = groupOpt.get();
+        var isUserInGroup = DbConfig.getInstance().getGroupDAO().isUserInGroup(group.getId(), user.getName());
 
-        if (!data.getPassword().equals(group.getPassword())) {
+        if (!isUserInGroup && !data.getPassword().equals(group.getPassword())) {
             session.sendChat("Group password is wrong.");
             return;
         }
 
         user.setSelected_group(data.getGroupName());
+        DbConfig.getInstance().getUserDAO().updateUser(user);
         session.sendMessage("getSelectedGroup", new SelectedGroupMessage(data.getGroupName()));
+
+        session.getClient().getAllRooms().forEach(room -> {
+            session.getClient().leaveRoom(room);
+        });
+
+        session.getClient().joinRoom(data.getGroupName());
 
         Logger.info("User {} selected a new group {}", user.getName(), user.getSelected_group());
     }

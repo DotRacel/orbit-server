@@ -3,6 +3,7 @@ package dev.racel.session;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import dev.racel.config.DbConfig;
 import dev.racel.config.WsConfig;
 import dev.racel.entity.OrbitUser;
 import dev.racel.entity.event.ChatMessage;
@@ -33,25 +34,35 @@ public class Session {
     }
 
     public void sendMessage(String eventName, Object data) {
-        var msg = new WsMessage(eventName,
-                WsConfig.mapper.convertValue(data, ObjectNode.class));
-        try {
-            client.sendEvent("event", WsConfig.mapper.writeValueAsString(msg));
-        } catch (JsonProcessingException e) {
-            Logger.error( "Failed to send event: {}", e.getMessage());
-        }
-    }
-
-    public void sendMessage(String eventName, String data) {
-        var msg = new WsRawMessage(eventName, data);
-        try {
-            client.sendEvent("event", WsConfig.mapper.writeValueAsString(msg));
-        } catch (JsonProcessingException e) {
-            Logger.error( "Failed to send event: {}", e.getMessage());
-        }
+        var msg = new WsMessage(eventName, data);
+        client.sendEvent("event", getJsonFromObject(msg));
     }
 
     public void sendChat(String text) {
-        sendMessage("doChat", new ChatMessage(text));
+        sendMessage("doChat", new ChatMessage("&7(&9OrbitClient&7) " + text));
+    }
+
+    public String getJsonFromObject(Object obj) {
+        try {
+            return WsConfig.mapper.writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            Logger.error(e, "Failed to deserialize object");
+        }
+        return null;
+    }
+
+    public void sendGroupMessage(String eventName, Object data) {
+        var rooms = client.getAllRooms();
+        if(rooms.isEmpty()) return;
+
+        rooms.forEach(room -> {
+            WsConfig.getInstance().getServer().getRoomOperations(room).sendEvent(
+                    "event",
+                    getJsonFromObject(new WsMessage(eventName, data)));
+        });
+    }
+
+    public void sendGroupChat(String text) {
+        sendGroupMessage("doChat", new  ChatMessage("&7(&9OrbitClient&7) " + text));
     }
 }

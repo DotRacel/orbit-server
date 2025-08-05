@@ -54,7 +54,7 @@ public class WsEventListener implements DataListener<String> {
         }
     }
 
-    private Object parseEventData(ObjectNode values, Class<?> dataType, String eventName) {
+    private Object parseEventData(Object values, Class<?> dataType, String eventName) {
         try {
             return objectMapper.convertValue(values, dataType);
         }catch (IllegalArgumentException e) {

@@ -2,18 +2,21 @@ package dev.racel.dao;
 
 import dev.racel.entity.Group;
 import dev.racel.mapper.GroupMapper;
+import org.jdbi.v3.sqlobject.config.KeyColumn;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
+import org.jdbi.v3.sqlobject.config.ValueColumn;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface GroupDAO {
     @SqlUpdate("""
         CREATE TABLE IF NOT EXISTS groups (
-            id INT AUTO_INCREMENT PRIMARY KEY,
+            id INTEGER PRIMARY KEY,
             group_name VARCHAR(50) UNIQUE NOT NULL,
             password varchar(100) NOT NULL);
 """)
@@ -49,12 +52,23 @@ public interface GroupDAO {
 
     @SqlUpdate("""
         CREATE TABLE IF NOT EXISTS group_logs (
-            id INT AUTO_INCREMENT PRIMARY KEY,
+            id INTEGER PRIMARY KEY,
             group_id INT NOT NULL,
             message TEXT NOT NULL,
             FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE);
 """)
     void createGroupLogsTable();
+
+    @SqlUpdate("""
+        CREATE TABLE IF NOT EXISTS group_schematics(
+            id INTEGER PRIMARY KEY,
+            group_id INT NOT NULL,
+            schem_id VARCHAR(100) NOT NULL,
+            schem_name VARCHAR(100) NOT NULL,
+            FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE
+        )
+""")
+    void createGroupSchematicsTable();
 
     @SqlQuery("SELECT * FROM groups WHERE group_name = ?")
     @RegisterRowMapper(GroupMapper.class)
@@ -65,6 +79,9 @@ public interface GroupDAO {
 
     @SqlUpdate("INSERT INTO group_roles(group_id, role_name) VALUES(?, ?)")
     void addGroupRole(String groupId, String roleName);
+
+    @SqlQuery("SELECT role_name FROM group_members WHERE group_id = ? AND user_name = ?")
+    String getGroupRoleNameByMemberName(int groupId, String memberName);
 
     @SqlUpdate("INSERT INTO group_role_permissions(group_id, role_name, permission) VALUES(?, ?, ?)")
     void addGroupRolePermission(int groupId, String roleName, String permission);
@@ -96,6 +113,17 @@ public interface GroupDAO {
     @SqlQuery("SELECT user_name FROM group_members WHERE group_id=?")
     List<String> getGroupMembers(int groupId);
 
+    @SqlQuery("SELECT 1 FROM group_members WHERE group_id = ? AND user_name = ?")
+    boolean isUserInGroup(int groupId, String username);
+
+    @SqlQuery("""
+            SELECT last_uuid
+            FROM group_members
+            LEFT JOIN users ON users.name = group_members.user_name
+            WHERE group_id = ?
+            """)
+    List<String> getGroupMembersUuid(int groupId);
+
     @SqlQuery("""
         SELECT g.group_name
         FROM groups g
@@ -108,5 +136,19 @@ public interface GroupDAO {
     void addGroupMember(int groupId, String userName, String role_name);
 
     @SqlUpdate("DELETE FROM group_members WHERE group_id = ? AND user_name = ?")
-    void deleteGroupMember(int groupId, String userName);
+    void removeGroupMember(int groupId, String userName);
+
+    @SqlUpdate("INSERT INTO group_schematics(group_id, schem_id, schem_name) VALUES(?, ?, ?)")
+    void addGroupSchematic(int groupId, String schemId, String schemName);
+
+    @SqlUpdate("DELETE FROM group_schematics WHERE group_id = ? AND schem_id = ?")
+    void removeGroupSchematicById(int groupId, String schemId);
+
+    @SqlQuery("SELECT schem_name FROM group_schematics where group_id = ? AND schem_name = ?")
+    Optional<String> getGroupSchematicName(int groupId, String schemName);
+
+    @SqlQuery("SELECT schem_id, schem_name from group_schematics WHERE group_id = ?")
+    @KeyColumn("schem_id")
+    @ValueColumn("schem_name")
+    Map<String, String> getGroupSchematics(int groupId);
 }

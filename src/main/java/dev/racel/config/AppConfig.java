@@ -17,6 +17,8 @@ public class AppConfig {
                 .get("/api/mixin", new KillSwitchAHandler())
                 .get("/api/schematic", new KillSwitchBHandler())
 
+                .get("/public/getSchemShare", new SchemShareHandler())
+
                 .start(8888);
 
         Logger.info("Web server initialized");

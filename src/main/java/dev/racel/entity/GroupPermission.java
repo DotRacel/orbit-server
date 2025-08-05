@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum GroupPermissions {
+public enum GroupPermission {
     MANAGE_PERMISSIONS("Manage Perms", "Manage the group permissions."),
     PROMOTE("Promote", "Promote a group member."),
     DEMOTE("Demote", "Demote a group member."),
@@ -21,6 +21,5 @@ public enum GroupPermissions {
     PINGS("Ping", "Use the group ping system."),
     F_RALLY("F Rally", "Send rally points to group members.");
 
-    final String name;
-    final String desc;
+    final String name, description;
 }

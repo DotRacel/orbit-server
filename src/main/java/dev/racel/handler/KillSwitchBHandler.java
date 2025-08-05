@@ -11,10 +11,10 @@ import org.jetbrains.annotations.NotNull;
 public class KillSwitchBHandler implements Handler {
     @Override
     public void handle(@NotNull Context context) throws Exception {
-        var purchaseId = context.formParam("p");
-        var uuid = context.formParam("u");
-        var inGameName = context.formParam("i");
-        var hardwareId = context.formParam("h");
+        var purchaseId = context.queryParam("p");
+        var uuid = context.queryParam("u");
+        var inGameName = context.queryParam("i");
+        var hardwareId = context.queryParam("h");
 
         context.result("false;socketInfo");
     }

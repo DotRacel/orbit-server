@@ -1,6 +1,5 @@
 package dev.racel.entity.event;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class WsMessage {
-    String name;
-    Object values;
+public class SchemRemovedMessage {
+    String schematicID, group;
 }

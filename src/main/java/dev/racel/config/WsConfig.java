@@ -1,9 +1,6 @@
 package dev.racel.config;
 
-import com.corundumstudio.socketio.Configuration;
-import com.corundumstudio.socketio.SocketConfig;
-import com.corundumstudio.socketio.SocketIOServer;
-import com.corundumstudio.socketio.Transport;
+import com.corundumstudio.socketio.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.racel.listener.WsConnectListener;
 import dev.racel.listener.WsDisconnectListener;
@@ -19,11 +16,14 @@ import dev.racel.listener.handler.impl.verify.ClientInfoEventHandler;
 import dev.racel.listener.handler.impl.verify.IsVerifiedEventHandler;
 import dev.racel.listener.handler.impl.verify.VerifyEventHandler;
 import dev.racel.session.SessionManager;
+import lombok.Getter;
 import org.tinylog.Logger;
 
 public class WsConfig {
     private static WsConfig INSTANCE;
     public static ObjectMapper mapper = new ObjectMapper();
+    @Getter
+    private SocketIOServer server;
 
     private WsConfig() {
         Configuration config = new Configuration();
@@ -48,13 +48,15 @@ public class WsConfig {
         registry.register(new SetSelectedGroupEventHandler());
         registry.register(new GroupGetAllEventHandler());
         registry.register(new GetSelectedGroupMembersEventHandler());
+        registry.register(new UploadSchemShareEventHandler());
+        registry.register(new DeleteGroupSchematicEventHandler());
 
         registry.register(new GetFeaturedServersEventHandler());
         registry.register(new GetPlayerCosmeticsEventHandler());
         registry.register(new GetAllCosmeticsEventHandler());
         registry.register(new GetSelectedTagsEventHandler());
 
-        SocketIOServer server = new SocketIOServer(config);
+        server = new SocketIOServer(config);
         SessionManager sessionManager = new SessionManager();
 
         server.addConnectListener(new WsConnectListener(sessionManager));

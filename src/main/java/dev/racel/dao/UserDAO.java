@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface UserDAO {
     @SqlUpdate("""
             CREATE TABLE IF NOT EXISTS users (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id INTEGER PRIMARY KEY,
                 name VARCHAR(100) NOT NULL,
                 purchase_id CHAR(32) NOT NULL,
                 hwid VARCHAR(100),
@@ -46,7 +46,7 @@ public interface UserDAO {
     Optional<OrbitUser> getUserByPurchaseId(String purchase_id);
 
     @SqlQuery("SELECT selected_group from users WHERE name=?")
-    String getSelectedGroupByName(String name);
+    Optional<String> getSelectedGroupByName(String name);
 
     @SqlUpdate("""
             UPDATE users SET name = :user.name, 
@@ -54,7 +54,8 @@ public interface UserDAO {
                     hwid = :user.hwid,
                     last_ign = :user.last_ign,
                     last_uuid = :user.last_uuid,
-                    last_version = :user.last_version
+                    last_version = :user.last_version,
+                    selected_group = :user.selected_group
             WHERE name = :user.name""")
     void updateUser(@BindBean("user") OrbitUser user);
 }

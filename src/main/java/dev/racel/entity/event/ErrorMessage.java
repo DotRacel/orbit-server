@@ -1,14 +1,15 @@
 package dev.racel.entity.event;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class WsMessage {
-    String name;
-    Object values;
+public class ErrorMessage {
+    String error;
+
+    public ErrorMessage(String error) {
+        this.error = "&7(&9OrbitClient&7) &c" + error;
+    }
 }

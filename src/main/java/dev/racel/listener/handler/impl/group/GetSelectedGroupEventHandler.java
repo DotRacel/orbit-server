@@ -13,7 +13,7 @@ public class GetSelectedGroupEventHandler implements OrbitEventHandler<Object> {
 
     @Override
     public void handle(Session session, Object data) {
-        String groupName = DbConfig.getInstance().getUserDAO().getSelectedGroupByName(session.getOrbitUser().get().getName());
+        String groupName = DbConfig.getInstance().getUserDAO().getSelectedGroupByName(session.getOrbitUser().get().getName()).orElse(null);
         session.sendMessage(getName(), new SelectedGroupMessage(groupName));
     }
 }

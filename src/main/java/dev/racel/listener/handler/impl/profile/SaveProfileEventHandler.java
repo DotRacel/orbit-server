@@ -6,7 +6,7 @@ import dev.racel.entity.event.UseProfileMessage;
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.session.Session;
 import dev.racel.util.JsonUtil;
-import dev.racel.util.RandomUtil;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.tinylog.Logger;
 
 public class SaveProfileEventHandler implements OrbitEventHandler<String> {
@@ -26,7 +26,7 @@ public class SaveProfileEventHandler implements OrbitEventHandler<String> {
         }
 
         Profile profile = new Profile(
-                RandomUtil.generateString(10),
+                RandomStringUtils.insecure().nextAlphabetic(10),
                 user.getName(),
                 data
         );

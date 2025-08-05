@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface ProfileDAO {
     @SqlUpdate("""
             CREATE TABLE IF NOT EXISTS profiles (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id INTEGER PRIMARY KEY,
                 profile_id CHAR(10) NOT NULL,
                 owner varchar(100) NOT NULL,
                 content text NOT NULL,

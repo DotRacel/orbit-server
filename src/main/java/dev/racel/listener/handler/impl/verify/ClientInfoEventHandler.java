@@ -1,10 +1,14 @@
 package dev.racel.listener.handler.impl.verify;
 
 import dev.racel.config.DbConfig;
+import dev.racel.dao.GroupDAO;
 import dev.racel.dao.UserDAO;
+import dev.racel.entity.Group;
 import dev.racel.entity.event.ClientInfo;
 import dev.racel.entity.event.IsVerifiedMessage;
+import dev.racel.entity.event.SelectedGroupMembersMessage;
 import dev.racel.listener.handler.OrbitEventHandler;
+import dev.racel.listener.handler.impl.group.GroupGetAllEventHandler;
 import dev.racel.session.Session;
 import dev.racel.util.UserUtil;
 import org.tinylog.Logger;
@@ -36,6 +40,9 @@ public class ClientInfoEventHandler implements OrbitEventHandler<ClientInfo> {
                 new IsVerifiedMessage(true));
         clientInfoOpt.ifPresent(clientInfo -> UserUtil.updateUserByClientInfo(user, clientInfo));
         userDAO.updateUser(user);
+
+        new GroupGetAllEventHandler().handle(session, data);
+
         Logger.info("User {} is verified successfully. ", user.getName());
     }
 }

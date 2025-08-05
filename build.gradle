@@ -29,6 +29,8 @@ dependencies {
     implementation("org.jdbi:jdbi3-core:3.49.5")
     implementation("org.jdbi:jdbi3-sqlite:3.49.5")
     implementation("org.jdbi:jdbi3-sqlobject:3.49.5")
+
+    implementation("org.apache.commons:commons-lang3:3.18.0")
 }
 
 test {
