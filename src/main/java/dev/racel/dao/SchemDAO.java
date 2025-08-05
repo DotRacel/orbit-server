@@ -33,7 +33,7 @@ public interface SchemDAO {
                :schem.z,
                :schem.content)
 """)
-    void addSchematic(@BindBean Schematic schem);
+    void addSchematic(@BindBean("schem") Schematic schem);
 
     @SqlQuery("SELECT * FROM schematics WHERE schem_id = ?")
     @RegisterRowMapper(SchemMapper.class)
