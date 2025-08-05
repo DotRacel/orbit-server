@@ -1,4 +1,4 @@
-package dev.racel.listener.handler.impl.group;
+package dev.racel.listener.handler.impl.group.manage;
 
 import dev.racel.config.DbConfig;
 import dev.racel.dao.GroupDAO;
