@@ -2,14 +2,11 @@ package dev.racel.session;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import dev.racel.config.DbConfig;
 import dev.racel.config.WsConfig;
 import dev.racel.entity.OrbitUser;
-import dev.racel.entity.event.ChatMessage;
-import dev.racel.entity.event.ClientInfo;
-import dev.racel.entity.event.WsMessage;
-import dev.racel.entity.event.WsRawMessage;
+import dev.racel.entity.message.ChatMessage;
+import dev.racel.entity.message.ClientInfoMessage;
+import dev.racel.entity.WsMessage;
 import lombok.Data;
 import org.tinylog.Logger;
 
@@ -23,10 +20,10 @@ public class Session {
 
     SocketIOClient client;
     OrbitUser orbitUser;
-    ClientInfo clientInfo;
+    ClientInfoMessage clientInfoMessage;
 
-    public Optional<ClientInfo> getClientInfo() {
-        return Optional.ofNullable(clientInfo);
+    public Optional<ClientInfoMessage> getClientInfoMessage() {
+        return Optional.ofNullable(clientInfoMessage);
     }
 
     public Optional<OrbitUser> getOrbitUser() {

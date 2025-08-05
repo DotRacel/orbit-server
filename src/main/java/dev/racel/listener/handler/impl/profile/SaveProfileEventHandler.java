@@ -2,7 +2,7 @@ package dev.racel.listener.handler.impl.profile;
 
 import dev.racel.config.DbConfig;
 import dev.racel.entity.Profile;
-import dev.racel.entity.event.UseProfileMessage;
+import dev.racel.entity.message.UseProfileMessage;
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.session.Session;
 import dev.racel.util.JsonUtil;

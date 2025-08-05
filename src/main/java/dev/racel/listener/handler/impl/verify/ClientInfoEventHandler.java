@@ -1,19 +1,16 @@
 package dev.racel.listener.handler.impl.verify;
 
 import dev.racel.config.DbConfig;
-import dev.racel.dao.GroupDAO;
 import dev.racel.dao.UserDAO;
-import dev.racel.entity.Group;
-import dev.racel.entity.event.ClientInfo;
-import dev.racel.entity.event.IsVerifiedMessage;
-import dev.racel.entity.event.SelectedGroupMembersMessage;
+import dev.racel.entity.message.ClientInfoMessage;
+import dev.racel.entity.message.IsVerifiedMessage;
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.listener.handler.impl.group.GroupGetAllEventHandler;
 import dev.racel.session.Session;
 import dev.racel.util.UserUtil;
 import org.tinylog.Logger;
 
-public class ClientInfoEventHandler implements OrbitEventHandler<ClientInfo> {
+public class ClientInfoEventHandler implements OrbitEventHandler<ClientInfoMessage> {
     private final UserDAO userDAO = DbConfig.getInstance().getUserDAO();
 
     @Override
@@ -22,8 +19,8 @@ public class ClientInfoEventHandler implements OrbitEventHandler<ClientInfo> {
     }
 
     @Override
-    public void handle(Session session, ClientInfo data) {
-        session.setClientInfo(data);
+    public void handle(Session session, ClientInfoMessage data) {
+        session.setClientInfoMessage(data);
 
         if (data.getPurchaseID() == null) return;
         var userOpt = userDAO.getUserByPurchaseId(data.getPurchaseID());
@@ -34,11 +31,11 @@ public class ClientInfoEventHandler implements OrbitEventHandler<ClientInfo> {
             return;
         }
         var user = userOpt.get();
-        var clientInfoOpt = session.getClientInfo();
+        var clientInfoOpt = session.getClientInfoMessage();
         session.setOrbitUser(user);
         session.sendMessage("isVerified",
                 new IsVerifiedMessage(true));
-        clientInfoOpt.ifPresent(clientInfo -> UserUtil.updateUserByClientInfo(user, clientInfo));
+        clientInfoOpt.ifPresent(clientInfoMessage -> UserUtil.updateUserByClientInfo(user, clientInfoMessage));
         userDAO.updateUser(user);
 
         new GroupGetAllEventHandler().handle(session, data);

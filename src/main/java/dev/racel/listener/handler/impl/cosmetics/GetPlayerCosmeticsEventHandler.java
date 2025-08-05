@@ -1,6 +1,6 @@
 package dev.racel.listener.handler.impl.cosmetics;
 
-import dev.racel.entity.event.PlayerUUID;
+import dev.racel.entity.PlayerUUID;
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.session.Session;
 

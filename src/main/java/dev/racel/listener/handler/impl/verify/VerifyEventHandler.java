@@ -2,10 +2,10 @@ package dev.racel.listener.handler.impl.verify;
 
 import dev.racel.config.DbConfig;
 import dev.racel.dao.UserDAO;
-import dev.racel.entity.event.IsVerifiedMessage;
-import dev.racel.entity.event.VerifyErrorMessage;
-import dev.racel.entity.event.VerifyMessage;
-import dev.racel.entity.event.VerifySuccessMessage;
+import dev.racel.entity.message.IsVerifiedMessage;
+import dev.racel.entity.message.VerifyErrorMessage;
+import dev.racel.entity.message.VerifyMessage;
+import dev.racel.entity.message.VerifySuccessMessage;
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.session.Session;
 import dev.racel.util.UserUtil;
@@ -23,7 +23,7 @@ public class VerifyEventHandler implements OrbitEventHandler<VerifyMessage> {
         var userOpt = userDAO.getUserByPurchaseId(data.getOrbitProductID());
         if (userOpt.isPresent()) {
             var user = userOpt.get();
-            var clientInfoOpt = session.getClientInfo();
+            var clientInfoOpt = session.getClientInfoMessage();
             session.setOrbitUser(user);
             session.sendMessage("isVerified",
                     new IsVerifiedMessage(true));

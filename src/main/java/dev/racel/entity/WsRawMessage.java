@@ -1,6 +1,5 @@
-package dev.racel.entity.event;
+package dev.racel.entity;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,8 +1,8 @@
 package dev.racel.listener.handler.impl.group;
 
 import dev.racel.config.DbConfig;
-import dev.racel.entity.event.GroupMessage;
-import dev.racel.entity.event.SelectedGroupMessage;
+import dev.racel.entity.message.GroupMessage;
+import dev.racel.entity.message.SelectedGroupMessage;
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.session.Session;
 import org.tinylog.Logger;

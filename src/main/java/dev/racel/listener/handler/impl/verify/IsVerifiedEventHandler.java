@@ -1,6 +1,6 @@
 package dev.racel.listener.handler.impl.verify;
 
-import dev.racel.entity.event.IsVerifiedMessage;
+import dev.racel.entity.message.IsVerifiedMessage;
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.session.Session;
 

@@ -1,14 +1,12 @@
 package dev.racel.listener.handler.impl.group;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.racel.config.DbConfig;
-import dev.racel.config.WsConfig;
 import dev.racel.dao.GroupDAO;
 import dev.racel.entity.GroupPermission;
 import dev.racel.entity.GroupRole;
 import dev.racel.entity.GroupWaypoint;
-import dev.racel.entity.event.GroupInfoMessage;
-import dev.racel.entity.event.GroupsMessage;
+import dev.racel.entity.message.GroupInfoMessage;
+import dev.racel.entity.message.GroupsMessage;
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.session.Session;
 import org.tinylog.Logger;

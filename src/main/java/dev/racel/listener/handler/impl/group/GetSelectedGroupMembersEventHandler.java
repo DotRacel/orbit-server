@@ -3,7 +3,7 @@ package dev.racel.listener.handler.impl.group;
 import dev.racel.config.DbConfig;
 import dev.racel.dao.GroupDAO;
 import dev.racel.entity.Group;
-import dev.racel.entity.event.SelectedGroupMembersMessage;
+import dev.racel.entity.message.SelectedGroupMembersMessage;
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.session.Session;
 import org.tinylog.Logger;
@@ -25,7 +25,7 @@ public class GetSelectedGroupMembersEventHandler implements OrbitEventHandler<Ob
             session.sendChat("You are not in any group yet");
             return;
         }
-        
+
         var groupName = groupNameOpt.get();
         Group group = groupDAO.getGroupByName(groupName).get();
         var members = groupDAO.getGroupMembersUuid(group.getId());

@@ -1,6 +1,6 @@
 package dev.racel.handler;
 
-import dev.racel.entity.event.PartneredServers;
+import dev.racel.entity.PartneredServers;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;

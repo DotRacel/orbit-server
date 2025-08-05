@@ -1,14 +1,12 @@
-package dev.racel.entity.event;
+package dev.racel.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class GroupsMessage {
-    List<GroupInfoMessage> groups;
+public class PlayerUUID {
+    String uuid;
 }

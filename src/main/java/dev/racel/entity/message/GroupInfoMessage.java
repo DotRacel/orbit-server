@@ -1,4 +1,4 @@
-package dev.racel.entity.event;
+package dev.racel.entity.message;
 
 import dev.racel.entity.GroupPermission;
 import dev.racel.entity.GroupRole;

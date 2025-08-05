@@ -1,4 +1,4 @@
-package dev.racel.entity.event;
+package dev.racel.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

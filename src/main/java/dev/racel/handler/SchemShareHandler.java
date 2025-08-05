@@ -2,7 +2,7 @@ package dev.racel.handler;
 
 import dev.racel.config.DbConfig;
 import dev.racel.dao.SchemDAO;
-import dev.racel.entity.event.ErrorMessage;
+import dev.racel.entity.message.ErrorMessage;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import lombok.AllArgsConstructor;

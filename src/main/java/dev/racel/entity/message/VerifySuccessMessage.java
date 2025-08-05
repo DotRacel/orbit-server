@@ -1,4 +1,4 @@
-package dev.racel.entity.event;
+package dev.racel.entity.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PlayerUUID {
-    String uuid;
+public class VerifySuccessMessage {
+    String success;
 }

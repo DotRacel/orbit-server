@@ -1,7 +1,7 @@
 package dev.racel.listener.handler.impl.group;
 
 import dev.racel.config.DbConfig;
-import dev.racel.entity.event.SchemRemovedMessage;
+import dev.racel.entity.message.SchemRemovedMessage;
 import dev.racel.listener.handler.OrbitEventHandler;
 import dev.racel.session.Session;
 import org.tinylog.Logger;

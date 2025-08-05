@@ -1,13 +1,13 @@
 package dev.racel.util;
 
 import dev.racel.entity.OrbitUser;
-import dev.racel.entity.event.ClientInfo;
+import dev.racel.entity.message.ClientInfoMessage;
 
 public class UserUtil {
-    public static void updateUserByClientInfo(OrbitUser user, ClientInfo clientInfo) {
-        user.setHwid(clientInfo.getHwid());
-        user.setLast_ign(clientInfo.getInGameName());
-        user.setLast_uuid(clientInfo.getUUID());
-        user.setLast_version(clientInfo.getVersion());
+    public static void updateUserByClientInfo(OrbitUser user, ClientInfoMessage clientInfoMessage) {
+        user.setHwid(clientInfoMessage.getHwid());
+        user.setLast_ign(clientInfoMessage.getInGameName());
+        user.setLast_uuid(clientInfoMessage.getUUID());
+        user.setLast_version(clientInfoMessage.getVersion());
     }
 }
