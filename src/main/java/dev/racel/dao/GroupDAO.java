@@ -34,6 +34,7 @@ public interface GroupDAO {
             group_id INT NOT NULL,
             user_name varchar(100) NOT NULL,
             role_name varchar(50) NOT NULL,
+            name_hash INT NOT NULL,
             FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE,
             FOREIGN KEY (user_name) REFERENCES users(name) ON DELETE CASCADE,
             FOREIGN KEY (role_name) REFERENCES group_roles(role_name) ON DELETE CASCADE);
@@ -132,11 +133,17 @@ public interface GroupDAO {
     """)
     List<String> getUserGroupNames(String userName);
 
-    @SqlUpdate("INSERT INTO group_members(group_id, user_name, role_name) VALUES (?, ?, ?)")
-    void addGroupMember(int groupId, String userName, String role_name);
+    @SqlUpdate("INSERT INTO group_members(group_id, user_name, role_name, name_hash) VALUES (?, ?, ?, ?)")
+    void addGroupMember(int groupId, String userName, String role_name, String nameHash);
 
     @SqlUpdate("DELETE FROM group_members WHERE group_id = ? AND user_name = ?")
     void removeGroupMember(int groupId, String userName);
+
+    @SqlUpdate("UPDATE group_members SET role_name = :roleName WHERE group_id = :groupId AND user_name = :userName")
+    void updateGroupMemberRole(int groupId, String userName, String roleName);
+
+    @SqlQuery("SELECT user_name FROM group_members WHERE group_id = ? AND name_hash = ?")
+    Optional<String> getMemberNameByHash(int groupId, String nameHash);
 
     @SqlUpdate("INSERT INTO group_schematics(group_id, schem_id, schem_name) VALUES(?, ?, ?)")
     void addGroupSchematic(int groupId, String schemId, String schemName);

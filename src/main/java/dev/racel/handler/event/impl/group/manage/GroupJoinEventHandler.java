@@ -40,7 +40,10 @@ public class GroupJoinEventHandler implements OrbitEventHandler<GroupMessage> {
             return;
         }
 
-        groupDAO.addGroupMember(group.getId(), user.getName(), GroupRole.MEMBER.toString());
+        groupDAO.addGroupMember(group.getId(),
+                user.getName(),
+                GroupRole.MEMBER.toString(),
+                String.valueOf(user.getName().hashCode()));
 
         Logger.info("User {} joined group {}", session.getOrbitUser().get().getName(), data.getGroupName());
     }

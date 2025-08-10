@@ -19,6 +19,16 @@ public enum GroupRole {
     final String name;
     final int priority;
 
+    public static GroupRole getByPriority(int priority) {
+        priority %= 5;
+        for (GroupRole groupRole : values()) {
+            if (groupRole.priority == priority) {
+                return groupRole;
+            }
+        }
+        return null;
+    }
+
     public static Map<GroupRole, List<GroupPermission>> getPredefinedPermissions() {
         return Map.of(
                 OWNER, List.of(
