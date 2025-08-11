@@ -1,26 +1,72 @@
 package dev.racel.config;
 
+import static io.javalin.apibuilder.ApiBuilder.*;
+
+import dev.racel.entity.message.ErrorMessage;
 import dev.racel.handler.api.*;
+import dev.racel.handler.api.manage.CreateUserHandler;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
+import io.javalin.http.UnauthorizedResponse;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.tinylog.Logger;
 
 public class AppConfig {
     private static AppConfig INSTANCE;
 
+    private static final String VALID_TOKEN = System.getenv("API_TOKEN")
+            != null ? System.getenv("API_TOKEN") : "somehow-fixed-api-token-ald8S712bLJ";
+
     private AppConfig() {
-        var app = Javalin.create()
-                .get("/", new ServerVersionHandler())
+        Javalin.create(config -> {
+            config.router.apiBuilder(() -> {
+                path("/api", () -> {
+                    get("/getPartneredServers", new PartneredServerHandler());
+                    get("/mixin", new KillSwitchAHandler());
+                    get("/schematic", new KillSwitchBHandler());
 
-                .get("/api/getPartneredServers", new PartneredServerHandler())
+                    path("/manage", () -> {
+                        before("*", ctx -> {
+                            String authHeader = ctx.header("Authorization");
+                            if (authHeader == null) {
+                                throw new UnauthorizedResponse("Missing Authorization Header");
+                            }
+                            String token = authHeader.startsWith("Bearer ")
+                                    ? authHeader.substring(7)
+                                    : authHeader;
+                            if (!VALID_TOKEN.equals(token)) {
+                                throw new UnauthorizedResponse("Invalid Token");
+                            }
+                        });
 
-                .get("/api/mixin", new KillSwitchAHandler())
-                .get("/api/schematic", new KillSwitchBHandler())
+                        get("/createUser", new CreateUserHandler());
+                    });
+                });
 
-                .get("/public/getSchemShare", new SchemShareHandler())
+                path("/public", () -> {
+                   get("/getSchemShare", new SchemShareHandler());
+                });
 
-                .start(8888);
+                get("/", new ServerVersionHandler());
+            });
+        }).start(8888);
 
         Logger.info("Web server initialized");
+    }
+
+    private static void sendUnauthorizedResponse(Context ctx, String message) {
+        ctx.status(401)
+                .contentType("application/json")
+                .json(new ErrorResponse(message));
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class ErrorResponse {
+        String error;
     }
 
     public static AppConfig getInstance() {
