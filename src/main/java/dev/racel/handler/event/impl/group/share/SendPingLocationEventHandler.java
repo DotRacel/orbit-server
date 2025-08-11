@@ -1,4 +1,4 @@
-package dev.racel.handler.event.impl.group.ping;
+package dev.racel.handler.event.impl.group.share;
 
 import dev.racel.entity.message.PingLocationMessage;
 import dev.racel.handler.event.OrbitEventHandler;
