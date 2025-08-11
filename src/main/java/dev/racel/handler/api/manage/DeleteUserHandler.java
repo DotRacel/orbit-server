@@ -5,13 +5,9 @@ import dev.racel.config.DbConfig;
 import dev.racel.dao.UserDAO;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class CreateUserHandler implements Handler {
+public class DeleteUserHandler implements Handler {
     private final UserDAO userDAO = DbConfig.getInstance().getUserDAO();
 
     @Override
@@ -25,24 +21,17 @@ public class CreateUserHandler implements Handler {
             return;
         }
 
-        if (userDAO.getUserByName(name).isPresent()) {
+        if (userDAO.getUserByName(name).isEmpty()) {
             ctx.status(400)
                     .contentType("application/json")
-                    .json(new AppConfig.ErrorResponse("username already exists"));
+                    .json(new AppConfig.ErrorResponse("user doesn't exist"));
             return;
         }
 
-        var purchaseId = "orbit-" + RandomStringUtils.secure().nextAlphanumeric(10);
-        userDAO.createNewUser(name, purchaseId);
+        userDAO.deleteUserByName(name);
+
         ctx.status(201)
                 .contentType("application/json")
-                .json(new NewUserInfo(name, purchaseId));
-    }
-
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Data
-    static class NewUserInfo {
-        String username, purchaseId;
+                .json("success");
     }
 }

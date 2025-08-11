@@ -3,6 +3,7 @@ package dev.racel.config;
 import static io.javalin.apibuilder.ApiBuilder.*;
 import dev.racel.handler.api.*;
 import dev.racel.handler.api.manage.CreateUserHandler;
+import dev.racel.handler.api.manage.DeleteUserHandler;
 import io.javalin.Javalin;
 import io.javalin.http.UnauthorizedResponse;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,7 @@ public class AppConfig {
                         });
 
                         get("/createUser", new CreateUserHandler());
+                        get("/deleteUser", new DeleteUserHandler());
                     });
                 });
 

@@ -48,6 +48,9 @@ public interface UserDAO {
     @SqlQuery("SELECT selected_group from users WHERE name=?")
     Optional<String> getSelectedGroupByName(String name);
 
+    @SqlUpdate("DELETE FROM users WHERE name = ?")
+    void deleteUserByName(String name);
+
     @SqlUpdate("""
             UPDATE users SET name = :user.name, 
                     purchase_id = :user.purchaseId,
