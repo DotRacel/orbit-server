@@ -2,7 +2,9 @@ package dev.racel.config;
 
 import com.corundumstudio.socketio.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.racel.entity.message.PingLocationMessage;
 import dev.racel.handler.event.impl.group.manage.*;
+import dev.racel.handler.event.impl.group.ping.SendPingLocationEventHandler;
 import dev.racel.listener.WsConnectListener;
 import dev.racel.listener.WsDisconnectListener;
 import dev.racel.listener.WsEventListener;
@@ -58,6 +60,7 @@ public class WsConfig {
         registry.register(new DemoteMemberEventHandler());
         registry.register(new GroupLeaveEventHandler());
         registry.register(new GroupDisbandEventHandler());
+        registry.register(new SendPingLocationEventHandler());
 
         registry.register(new GetFeaturedServersEventHandler());
         registry.register(new GetPlayerCosmeticsEventHandler());
