@@ -6,6 +6,7 @@ import dev.racel.entity.Group;
 import dev.racel.entity.GroupRole;
 import dev.racel.entity.message.GroupMessage;
 import dev.racel.handler.event.OrbitEventHandler;
+import dev.racel.handler.event.impl.group.GroupGetAllEventHandler;
 import dev.racel.session.Session;
 import org.tinylog.Logger;
 
@@ -41,7 +42,12 @@ public class GroupCreateEventHandler implements OrbitEventHandler<GroupMessage> 
             });
         });
 
-        groupDAO.addGroupMember(group.getId(), user.getName(), OWNER.toString());
+        groupDAO.addGroupMember(group.getId(),
+                user.getName(),
+                OWNER.toString(),
+                String.valueOf(user.getName().hashCode()));
+
+        new GroupGetAllEventHandler().handle(session, null);
 
         Logger.info("User {} created a group {} with password {}",
                 user.getName(),

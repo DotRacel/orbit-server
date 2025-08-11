@@ -56,6 +56,8 @@ public class WsConfig {
         registry.register(new KickMemberEventHandler());
         registry.register(new PromoteMemberEventHandler());
         registry.register(new DemoteMemberEventHandler());
+        registry.register(new GroupLeaveEventHandler());
+        registry.register(new GroupDisbandEventHandler());
 
         registry.register(new GetFeaturedServersEventHandler());
         registry.register(new GetPlayerCosmeticsEventHandler());

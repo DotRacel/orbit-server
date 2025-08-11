@@ -39,7 +39,7 @@ public class DemoteMemberEventHandler implements OrbitEventHandler<MemberManageM
 
         if (targetName.equals(user)) {
             session.sendChat("You cannot demote yourself.");
-            return; 
+            return;
         }
 
         var targetRoleName = groupDAO.getGroupRoleNameByMemberName(group.getId(), targetName);

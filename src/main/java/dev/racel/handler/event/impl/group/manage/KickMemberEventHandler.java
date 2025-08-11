@@ -36,7 +36,7 @@ public class KickMemberEventHandler implements OrbitEventHandler<MemberManageMes
 
         var kickeeName = toKick.get();
         if (kickeeName.equals(user)) {
-            session.sendChat("You can't kick yourself.");
+            session.sendChat("You cannot kick yourself.");
             return;
         }
 
