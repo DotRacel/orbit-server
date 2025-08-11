@@ -1,12 +1,9 @@
 package dev.racel.config;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
-
-import dev.racel.entity.message.ErrorMessage;
 import dev.racel.handler.api.*;
 import dev.racel.handler.api.manage.CreateUserHandler;
 import io.javalin.Javalin;
-import io.javalin.http.Context;
 import io.javalin.http.UnauthorizedResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -54,12 +51,6 @@ public class AppConfig {
         }).start(8888);
 
         Logger.info("Web server initialized");
-    }
-
-    private static void sendUnauthorizedResponse(Context ctx, String message) {
-        ctx.status(401)
-                .contentType("application/json")
-                .json(new ErrorResponse(message));
     }
 
     @AllArgsConstructor
