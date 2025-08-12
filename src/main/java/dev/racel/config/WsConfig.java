@@ -23,16 +23,18 @@ import dev.racel.session.SessionManager;
 import lombok.Getter;
 import org.tinylog.Logger;
 
+import java.util.ResourceBundle;
+
 public class WsConfig {
     private static WsConfig INSTANCE;
     public static ObjectMapper mapper = new ObjectMapper();
     @Getter
     private SocketIOServer server;
 
-    private WsConfig() {
+    private WsConfig(int port) {
         Configuration config = new Configuration();
         config.setHostname("localhost");
-        config.setPort(8080);
+        config.setPort(port);
         config.setTransports(Transport.WEBSOCKET);
         SocketConfig socketConfig = new SocketConfig();
         socketConfig.setReuseAddress(true);
@@ -85,7 +87,7 @@ public class WsConfig {
 
     public static WsConfig getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new WsConfig();
+            INSTANCE = new WsConfig(Integer.parseInt(ResourceBundle.getBundle("config").getString("websocket.port")));
         }
         return INSTANCE;
     }

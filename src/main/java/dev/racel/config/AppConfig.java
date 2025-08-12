@@ -11,13 +11,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.tinylog.Logger;
 
+import java.util.ResourceBundle;
+
 public class AppConfig {
     private static AppConfig INSTANCE;
 
-    private static final String VALID_TOKEN = System.getenv("API_TOKEN")
-            != null ? System.getenv("API_TOKEN") : "somehow-fixed-api-token-ald8S712bLJ";
+    private final String API_TOKEN;
 
-    private AppConfig() {
+    private AppConfig(String apiToken, int port) {
+        this.API_TOKEN = apiToken;
         Javalin.create(config -> {
             config.router.apiBuilder(() -> {
                 path("/api", () -> {
@@ -34,7 +36,7 @@ public class AppConfig {
                             String token = authHeader.startsWith("Bearer ")
                                     ? authHeader.substring(7)
                                     : authHeader;
-                            if (!VALID_TOKEN.equals(token)) {
+                            if (!API_TOKEN.equals(token)) {
                                 throw new UnauthorizedResponse("Invalid Token");
                             }
                         });
@@ -64,7 +66,10 @@ public class AppConfig {
 
     public static AppConfig getInstance() {
         if(INSTANCE == null) {
-            INSTANCE = new AppConfig();
+            var bundle = ResourceBundle.getBundle("config");
+
+            INSTANCE = new AppConfig(bundle.getString("api_token"),
+                    Integer.parseInt(bundle.getString("app.port")));
         }
         return INSTANCE;
     }
