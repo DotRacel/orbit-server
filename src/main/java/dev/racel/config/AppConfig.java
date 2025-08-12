@@ -52,7 +52,7 @@ public class AppConfig {
 
                 get("/", new ServerVersionHandler());
             });
-        }).start(8888);
+        }).start(port);
 
         Logger.info("Web server initialized");
     }
