@@ -33,7 +33,6 @@ public class WsConfig {
 
     private WsConfig(int port) {
         Configuration config = new Configuration();
-        config.setHostname("localhost");
         config.setPort(port);
         config.setTransports(Transport.WEBSOCKET);
         SocketConfig socketConfig = new SocketConfig();
