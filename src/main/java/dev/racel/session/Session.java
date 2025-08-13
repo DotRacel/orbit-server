@@ -18,6 +18,8 @@ public class Session {
         this.client = client;
     }
 
+    //TODO: eliminate redundancy of Optionals
+
     SocketIOClient client;
     OrbitUser orbitUser;
     ClientInfoMessage clientInfoMessage;
@@ -33,6 +35,7 @@ public class Session {
 
     public void sendMessage(String eventName, Object data) {
         var msg = new WsMessage(eventName, data);
+        assert data != null;
         client.sendEvent("event", getJsonFromObject(msg));
     }
 
@@ -50,6 +53,7 @@ public class Session {
     }
 
     public void sendGroupMessage(String eventName, Object data) {
+        assert data != null;
         var rooms = client.getAllRooms();
         if(rooms.isEmpty()) return;
 

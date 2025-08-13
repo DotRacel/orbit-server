@@ -18,10 +18,11 @@ public class GetSelectedGroupMembersEventHandler implements OrbitEventHandler<Ob
 
     @Override
     public void handle(Session session, Object data) {
-        var groupNameOpt = DbConfig.getInstance().getUserDAO().getSelectedGroupByName(session.getOrbitUser().get().getName());
+        var userName = session.getOrbitUser().get().getName();
+        var groupNameOpt = DbConfig.getInstance().getUserDAO().getSelectedGroupByName(userName);
 
         if(groupNameOpt.isEmpty()) {
-            Logger.info("User {} hasn't selected a group yet but requested for the group {}'s member list");
+            Logger.info("User {} hasn't selected a group yet but requested for member list", userName);
             session.sendChat("You are not in any group yet");
             return;
         }
