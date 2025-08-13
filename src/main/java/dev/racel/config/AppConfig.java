@@ -50,6 +50,7 @@ public class AppConfig {
 
                 path("/public", () -> {
                    get("/getSchemShare", new SchemShareHandler());
+                   get("/getOnlinePlayers", new GetOnlinePlayersHandler());
                 });
 
                 get("/", new ServerVersionHandler());
