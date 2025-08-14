@@ -7,6 +7,7 @@ import dev.racel.entity.OrbitUser;
 import dev.racel.entity.message.ChatMessage;
 import dev.racel.entity.message.ClientInfoMessage;
 import dev.racel.entity.message.WsMessage;
+import dev.racel.util.JsonUtil;
 import lombok.Data;
 import org.tinylog.Logger;
 
@@ -36,20 +37,11 @@ public class Session {
     public void sendMessage(String eventName, Object data) {
         var msg = new WsMessage(eventName, data);
         assert data != null;
-        client.sendEvent("event", getJsonFromObject(msg));
+        client.sendEvent("event", JsonUtil.getJsonFromObject(msg));
     }
 
     public void sendChat(String text) {
         sendMessage("doChat", new ChatMessage("&7(&9OrbitClient&7) " + text));
-    }
-
-    public String getJsonFromObject(Object obj) {
-        try {
-            return WsConfig.mapper.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
-            Logger.error(e, "Failed to deserialize object");
-        }
-        return null;
     }
 
     public void sendGroupMessage(String eventName, Object data) {
@@ -60,7 +52,7 @@ public class Session {
         rooms.forEach(room -> {
             WsConfig.getInstance().getServer().getRoomOperations(room).sendEvent(
                     "event",
-                    getJsonFromObject(new WsMessage(eventName, data)));
+                    JsonUtil.getJsonFromObject(new WsMessage(eventName, data)));
         });
     }
 
