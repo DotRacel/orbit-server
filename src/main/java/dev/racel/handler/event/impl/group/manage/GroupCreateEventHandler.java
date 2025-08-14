@@ -27,7 +27,7 @@ public class GroupCreateEventHandler implements OrbitEventHandler<GroupMessage> 
             return;
         }
 
-        var user = session.getOrbitUser().get();
+        var user = session.getOrbitUser();
 
         Group group = new Group(0, data.getGroupName(), data.getPassword());
         groupDAO.createGroup(group);

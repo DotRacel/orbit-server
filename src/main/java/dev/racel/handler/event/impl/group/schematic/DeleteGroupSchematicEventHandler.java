@@ -24,6 +24,6 @@ public class DeleteGroupSchematicEventHandler implements OrbitEventHandler<Schem
         DbConfig.getInstance().getGroupDAO().removeGroupSchematicById(groupOpt.get().getId(), data.getSchematicID());
         session.sendGroupMessage("removedGroupSchematic", data);
 
-        Logger.info("User {} removed schematic {} in group {}", session.getOrbitUser().get().getName(), data.getGroup(), data.getGroup());
+        Logger.info("User {} removed schematic {} in group {}", session.getOrbitUser().getName(), data.getGroup(), data.getGroup());
     }
 }

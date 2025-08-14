@@ -18,7 +18,6 @@ public class UploadGroupWaypointEventHandler implements OrbitEventHandler<Waypoi
 
     @Override
     public void handle(Session session, WaypointMessage data) {
-        var user = session.getOrbitUser().get().getName();
         var groupNameOpt = groupDAO.getGroupByName(data.getGroup());
 
         if(groupNameOpt.isEmpty()){

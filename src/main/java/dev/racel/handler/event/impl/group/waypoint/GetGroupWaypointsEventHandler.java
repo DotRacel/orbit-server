@@ -21,7 +21,7 @@ public class GetGroupWaypointsEventHandler implements OrbitEventHandler<GetGroup
 
     @Override
     public void handle(Session session, GetGroupWaypointsEventHandler data) {
-        var user = session.getOrbitUser().get().getName();
+        var userName = session.getOrbitUser().getName();
         var groupNameOpt = groupDAO.getGroupByName(data.getName());
 
         if(groupNameOpt.isEmpty()){
@@ -49,7 +49,7 @@ public class GetGroupWaypointsEventHandler implements OrbitEventHandler<GetGroup
                 ));
 
         Logger.info("User {} fetched group {} waypoints",
-                user,
+                userName,
                 data.getName());
     }
 }

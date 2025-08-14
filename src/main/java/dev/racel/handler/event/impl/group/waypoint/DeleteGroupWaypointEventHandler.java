@@ -16,7 +16,7 @@ public class DeleteGroupWaypointEventHandler implements OrbitEventHandler<Delete
 
     @Override
     public void handle(Session session, DeleteGroupWaypointMessage data) {
-        var user = session.getOrbitUser().get().getName();
+        var userName = session.getOrbitUser().getName();
         var groupOpt = groupDAO.getGroupByName(data.getGroup());
 
         if(groupOpt.isEmpty()) {
@@ -26,7 +26,7 @@ public class DeleteGroupWaypointEventHandler implements OrbitEventHandler<Delete
 
         var group = groupOpt.get();
 
-        if(!groupDAO.isUserInGroup(group.getId(), user)) {
+        if(!groupDAO.isUserInGroup(group.getId(), userName)) {
             session.sendChat("You are not in the group!");
             return;
         }

@@ -9,6 +9,7 @@ import dev.racel.entity.message.ClientInfoMessage;
 import dev.racel.entity.message.WsMessage;
 import dev.racel.util.JsonUtil;
 import lombok.Data;
+import lombok.Getter;
 import org.tinylog.Logger;
 
 import java.util.Optional;
@@ -18,21 +19,10 @@ public class Session {
     public Session(SocketIOClient client) {
         this.client = client;
     }
-
-    //TODO: eliminate redundancy of Optionals
-
     SocketIOClient client;
     OrbitUser orbitUser;
     ClientInfoMessage clientInfoMessage;
     boolean verified;
-
-    public Optional<ClientInfoMessage> getClientInfoMessage() {
-        return Optional.ofNullable(clientInfoMessage);
-    }
-
-    public Optional<OrbitUser> getOrbitUser() {
-        return Optional.ofNullable(orbitUser);
-    }
 
     public void sendMessage(String eventName, Object data) {
         var msg = new WsMessage(eventName, data);

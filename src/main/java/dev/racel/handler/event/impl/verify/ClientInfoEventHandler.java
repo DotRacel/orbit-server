@@ -21,8 +21,8 @@ public class ClientInfoEventHandler implements OrbitEventHandler<ClientInfoMessa
     @Override
     public void handle(Session session, ClientInfoMessage data) {
         session.setClientInfoMessage(data);
-
         if (data.getPurchaseID() == null) return;
+
         var userOpt = userDAO.getUserByPurchaseId(data.getPurchaseID());
         if(userOpt.isEmpty()) {
             Logger.info("User {} provided an invalid purchase id {}",
@@ -30,12 +30,19 @@ public class ClientInfoEventHandler implements OrbitEventHandler<ClientInfoMessa
                     data.getPurchaseID());
             return;
         }
+
         var user = userOpt.get();
-        var clientInfoOpt = session.getClientInfoMessage();
+        var clientInfo = session.getClientInfoMessage();
         session.setOrbitUser(user);
         session.sendMessage("isVerified",
                 new IsVerifiedMessage(true));
-        clientInfoOpt.ifPresent(clientInfoMessage -> UserUtil.updateUserByClientInfo(user, clientInfoMessage));
+
+        if(clientInfo != null) {
+            UserUtil.updateUserByClientInfo(user, clientInfo);
+        }else {
+            session.sendMessage("rclnti", "");
+        }
+
         userDAO.updateUser(user);
         session.setVerified(true);
 

@@ -6,8 +6,8 @@ import dev.racel.entity.message.ClientInfoMessage;
 public class UserUtil {
     public static void updateUserByClientInfo(OrbitUser user, ClientInfoMessage clientInfoMessage) {
         user.setHwid(clientInfoMessage.getHwid());
-        user.setLast_ign(clientInfoMessage.getInGameName());
-        user.setLast_uuid(clientInfoMessage.getUUID());
-        user.setLast_version(clientInfoMessage.getVersion());
+        user.setLastIgn(clientInfoMessage.getInGameName());
+        user.setLastUUID(clientInfoMessage.getUUID());
+        user.setLastVersion(clientInfoMessage.getVersion());
     }
 }

@@ -13,8 +13,8 @@ public class GetSelectedGroupEventHandler implements OrbitEventHandler<Object> {
 
     @Override
     public void handle(Session session, Object data) {
-        var user = session.getOrbitUser().get().getName();
-        var groupOpt = DbConfig.getInstance().getUserDAO().getSelectedGroupByName(user);
+        var userName = session.getOrbitUser().getName();
+        var groupOpt = DbConfig.getInstance().getUserDAO().getSelectedGroupByName(userName);
 
         if (groupOpt.isEmpty()) {
             return;

@@ -15,7 +15,7 @@ public class UseProfileEventHandler implements OrbitEventHandler<UseProfileMessa
 
     @Override
     public void handle(Session session, UseProfileMessage data) {
-        var user = session.getOrbitUser().get();
+        var user = session.getOrbitUser();
         var profile = DbConfig.getInstance().getProfileDAO().getProfileById(data.getProfileId());
 
         if(profile.isEmpty()) {

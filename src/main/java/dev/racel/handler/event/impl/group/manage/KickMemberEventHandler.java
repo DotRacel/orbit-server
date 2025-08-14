@@ -17,10 +17,10 @@ public class KickMemberEventHandler implements OrbitEventHandler<MemberManageMes
 
     @Override
     public void handle(Session session, MemberManageMessage data) {
-        var user = session.getOrbitUser().orElseThrow().getName();
+        var userName = session.getOrbitUser().getName();
         var group = groupDAO.getGroupByName(data.getGroupName()).orElseThrow();
 
-        var role = groupDAO.getGroupRoleNameByMemberName(group.getId(), user);
+        var role = groupDAO.getGroupRoleNameByMemberName(group.getId(), userName);
         if (!groupDAO.hasGroupRolePermission(group.getId(),
                 role,
                 GroupPermission.KICK.toString())) {
@@ -35,13 +35,13 @@ public class KickMemberEventHandler implements OrbitEventHandler<MemberManageMes
         }
 
         var kickeeName = toKick.get();
-        if (kickeeName.equals(user)) {
+        if (kickeeName.equals(userName)) {
             session.sendChat("You cannot kick yourself.");
             return;
         }
 
         groupDAO.removeGroupMember(group.getId(), kickeeName);
 
-        session.sendGroupChat(kickeeName + " was kicked by " + user);
+        session.sendGroupChat(kickeeName + " was kicked by " + userName);
     }
 }

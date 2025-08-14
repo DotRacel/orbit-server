@@ -18,7 +18,7 @@ public class DemoteMemberEventHandler implements OrbitEventHandler<MemberManageM
 
     @Override
     public void handle(Session session, MemberManageMessage data) {
-        var user = session.getOrbitUser().orElseThrow().getName();
+        var user = session.getOrbitUser().getName();
         var group = groupDAO.getGroupByName(data.getGroupName()).orElseThrow();
 
         var role = groupDAO.getGroupRoleNameByMemberName(group.getId(), user);

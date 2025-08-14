@@ -17,7 +17,7 @@ public class GroupDisbandEventHandler implements OrbitEventHandler<GroupLeaveMes
 
     @Override
     public void handle(Session session, GroupLeaveMessage data) {
-        var userName = session.getOrbitUser().get().getName();
+        var userName = session.getOrbitUser().getName();
         var groupOpt = groupDAO.getGroupByName(data.getGroupName());
 
         if (groupOpt.isEmpty()) {

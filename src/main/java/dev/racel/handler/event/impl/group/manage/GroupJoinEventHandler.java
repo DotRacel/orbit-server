@@ -18,7 +18,7 @@ public class GroupJoinEventHandler implements OrbitEventHandler<GroupMessage> {
 
     @Override
     public void handle(Session session, GroupMessage data) {
-        var user = session.getOrbitUser().get();
+        var user = session.getOrbitUser();
         var groupOpt = groupDAO.getGroupByName(data.getGroupName());
 
         if(groupOpt.isEmpty()) {
@@ -45,6 +45,6 @@ public class GroupJoinEventHandler implements OrbitEventHandler<GroupMessage> {
                 GroupRole.MEMBER.toString(),
                 String.valueOf(user.getName().hashCode()));
 
-        Logger.info("User {} joined group {}", session.getOrbitUser().get().getName(), data.getGroupName());
+        Logger.info("User {} joined group {}", user.getName(), data.getGroupName());
     }
 }

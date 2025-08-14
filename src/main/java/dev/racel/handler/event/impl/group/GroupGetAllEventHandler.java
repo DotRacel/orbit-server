@@ -25,8 +25,8 @@ public class GroupGetAllEventHandler implements OrbitEventHandler<Object> {
 
     @Override
     public void handle(Session session, Object data) {
-        var user = session.getOrbitUser().get();
-        var groups = DbConfig.getInstance().getGroupDAO().getUserGroupNames(session.getOrbitUser().get().getName());
+        var user = session.getOrbitUser();
+        var groups = DbConfig.getInstance().getGroupDAO().getUserGroupNames(user.getName());
         GroupsMessage groupsMessage = new GroupsMessage(new ArrayList<>());
         groups.forEach(group -> {
             groupsMessage.getGroups().add(buildMessage(group));

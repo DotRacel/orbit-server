@@ -25,7 +25,7 @@ public class UploadSchemShareEventHandler implements OrbitEventHandler<SchemShar
 
     @Override
     public void handle(Session session, SchemShareMessage data) {
-        var user = session.getOrbitUser().get();
+        var user = session.getOrbitUser();
         var selectedGroupName = userDAO.getSelectedGroupByName(user.getName());
 
         if(selectedGroupName.isEmpty()) {

@@ -18,10 +18,10 @@ public class PromoteMemberEventHandler implements OrbitEventHandler<MemberManage
 
     @Override
     public void handle(Session session, MemberManageMessage data) {
-        var user = session.getOrbitUser().orElseThrow().getName();
+        var userName = session.getOrbitUser().getName();
         var group = groupDAO.getGroupByName(data.getGroupName()).orElseThrow();
 
-        var role = groupDAO.getGroupRoleNameByMemberName(group.getId(), user);
+        var role = groupDAO.getGroupRoleNameByMemberName(group.getId(), userName);
         if (!groupDAO.hasGroupRolePermission(group.getId(),
                 role,
                 GroupPermission.KICK.toString())) {
@@ -38,7 +38,7 @@ public class PromoteMemberEventHandler implements OrbitEventHandler<MemberManage
 
         var targetName =  targetOpt.get();
 
-        if(targetName.equals(user)) {
+        if(targetName.equals(userName)) {
             session.sendChat("You cannot promote yourself.");
             return;
         }

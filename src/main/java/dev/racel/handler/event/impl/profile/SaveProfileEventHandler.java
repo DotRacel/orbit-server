@@ -16,7 +16,7 @@ public class SaveProfileEventHandler implements OrbitEventHandler<String> {
 
     @Override
     public void handle(Session session, String data) {
-        var user = session.getOrbitUser().get();
+        var user = session.getOrbitUser();
 
         Profile profile = new Profile(
                 RandomStringUtils.insecure().nextAlphabetic(10),

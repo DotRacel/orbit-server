@@ -16,7 +16,7 @@ public class SetSelectedGroupEventHandler implements OrbitEventHandler<GroupMess
 
     @Override
     public void handle(Session session, GroupMessage data) {
-        var user = session.getOrbitUser().get();
+        var user = session.getOrbitUser();
         var groupOpt = DbConfig.getInstance().getGroupDAO().getGroupByName(data.getGroupName());
 
         if(groupOpt.isEmpty()) {
@@ -32,7 +32,7 @@ public class SetSelectedGroupEventHandler implements OrbitEventHandler<GroupMess
             return;
         }
 
-        user.setSelected_group(data.getGroupName());
+        user.setSelectedGroup(data.getGroupName());
         DbConfig.getInstance().getUserDAO().updateUser(user);
         session.sendMessage("getSelectedGroup", new SelectedGroupMessage(data.getGroupName()));
 
@@ -42,6 +42,6 @@ public class SetSelectedGroupEventHandler implements OrbitEventHandler<GroupMess
 
         session.getClient().joinRoom(data.getGroupName());
 
-        Logger.info("User {} selected a new group {}", user.getName(), user.getSelected_group());
+        Logger.info("User {} selected a new group {}", user.getName(), user.getSelectedGroup());
     }
 }

@@ -23,13 +23,19 @@ public class VerifyEventHandler implements OrbitEventHandler<VerifyMessage> {
         var userOpt = userDAO.getUserByPurchaseId(data.getOrbitProductID());
         if (userOpt.isPresent()) {
             var user = userOpt.get();
-            var clientInfoOpt = session.getClientInfoMessage();
+            var clientInfo = session.getClientInfoMessage();
             session.setOrbitUser(user);
             session.sendMessage("isVerified",
                     new IsVerifiedMessage(true));
             session.sendMessage("verify", new VerifySuccessMessage("Success"));
-            clientInfoOpt.ifPresent(clientInfo -> UserUtil.updateUserByClientInfo(user, clientInfo));
+
+            if (clientInfo != null) {
+                UserUtil.updateUserByClientInfo(user, clientInfo);
+            }else {
+                session.sendMessage("rclnti", "");
+            }
             userDAO.updateUser(user);
+
             Logger.info("User {} is verified successfully. ", user.getName());
         }else {
             Logger.error( "Purchase id not found: {}", data.getOrbitProductID());
