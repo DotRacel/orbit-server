@@ -4,6 +4,9 @@ import com.corundumstudio.socketio.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.racel.handler.event.impl.group.manage.*;
 import dev.racel.handler.event.impl.group.share.*;
+import dev.racel.handler.event.impl.group.waypoint.DeleteGroupWaypointEventHandler;
+import dev.racel.handler.event.impl.group.waypoint.GetGroupWaypointsEventHandler;
+import dev.racel.handler.event.impl.group.waypoint.UploadGroupWaypointEventHandler;
 import dev.racel.listener.WsConnectListener;
 import dev.racel.listener.WsDisconnectListener;
 import dev.racel.listener.WsEventListener;
@@ -65,6 +68,9 @@ public class WsConfig {
         registry.register(new SendPingBlockEventHandler());
         registry.register(new SendPingChunkEventHandler());
         registry.register(new SendSharePatchCrumbEventHandler());
+        registry.register(new GetGroupWaypointsEventHandler());
+        registry.register(new DeleteGroupWaypointEventHandler());
+        registry.register(new UploadGroupWaypointEventHandler());
 
         registry.register(new GetFeaturedServersEventHandler());
         registry.register(new GetPlayerCosmeticsEventHandler());

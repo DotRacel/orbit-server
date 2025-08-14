@@ -1,6 +1,8 @@
 package dev.racel.dao;
 
 import dev.racel.entity.Group;
+import dev.racel.entity.GroupWaypoint;
+import dev.racel.entity.message.WaypointMessage;
 import dev.racel.mapper.GroupMapper;
 import org.jdbi.v3.sqlobject.config.KeyColumn;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
@@ -70,6 +72,33 @@ public interface GroupDAO {
         )
 """)
     void createGroupSchematicsTable();
+
+    @SqlUpdate("""
+        CREATE TABLE IF NOT EXISTS group_waypoints(
+            id INTEGER PRIMARY KEY,
+            group_name VARCHAR(100) NOT NULL,
+            waypoint_id VARCHAR(100) NOT NULL,
+            name VARCHAR(100) NOT NULL,
+            server_ip VARCHAR(100) NOT NULL,
+            x DOUBLE NOT NULL,
+            y DOUBLE NOT NULL,
+            z DOUBLE NOT NULL,
+            FOREIGN KEY (group_name) REFERENCES groups(group_name)
+        )
+""")
+    void createGroupWaypointTable();
+
+    @SqlUpdate("""
+        INSERT INTO group_waypoints(group_name, waypoint_id, name, server_ip, x, y, z)
+        VALUES(:wp.groupName, :wp.id, :wp.name, :wp.serverIP, :wp.x, :wp.y, :wp.z)
+""")
+    void addGroupWaypoint(@BindBean("wp") GroupWaypoint waypoint);
+
+    @SqlUpdate("DELETE FROM group_waypoints WHERE group_name = ? AND waypoint_id = ?")
+    void removeGroupWaypointById(String groupName, String waypointId);
+
+    @SqlQuery("SELECT * FROM group_waypoints WHERE group_name = ?")
+    List<GroupWaypoint> getGroupWaypoints(String groupName);
 
     @SqlQuery("SELECT * FROM groups WHERE group_name = ?")
     @RegisterRowMapper(GroupMapper.class)

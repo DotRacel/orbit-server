@@ -1,4 +1,4 @@
-package dev.racel.entity;
+package dev.racel.entity.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class GroupWaypoint {
-    String groupName, name, id;
-    Double x, y, z;
-    String serverIP;
+
+public class GetGroupWaypointsMessage {
+    String group;
 }

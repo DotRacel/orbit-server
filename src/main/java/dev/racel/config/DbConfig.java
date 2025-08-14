@@ -37,6 +37,7 @@ public class DbConfig {
         this.groupDAO.createGroupRolesTable();
         this.groupDAO.createGroupRolePermissionsTable();
         this.groupDAO.createGroupSchematicsTable();
+        this.groupDAO.createGroupWaypointTable();
 
         this.schemDAO = jdbi.onDemand(SchemDAO.class);
         this.schemDAO.createTable();
