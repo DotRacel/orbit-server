@@ -3,6 +3,7 @@ package dev.racel.handler.event.impl.group.waypoint;
 import dev.racel.config.DbConfig;
 import dev.racel.dao.GroupDAO;
 import dev.racel.entity.message.DeleteGroupWaypointMessage;
+import dev.racel.entity.message.GetGroupWaypointsMessage;
 import dev.racel.handler.event.OrbitEventHandler;
 import dev.racel.session.Session;
 
@@ -33,5 +34,9 @@ public class DeleteGroupWaypointEventHandler implements OrbitEventHandler<Delete
 
         groupDAO.removeGroupWaypointById(data.getGroup(), data.getWaypointId());
         session.sendChat("Waypoint #" + data.getWaypointId() + " is deleted");
+
+        // Update users' group waypoints list
+        new GetGroupWaypointsEventHandler().handle(session,
+                new GetGroupWaypointsMessage(data.getGroup()));
     }
 }

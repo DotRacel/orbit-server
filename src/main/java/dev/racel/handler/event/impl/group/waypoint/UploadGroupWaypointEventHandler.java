@@ -3,6 +3,7 @@ package dev.racel.handler.event.impl.group.waypoint;
 import dev.racel.config.DbConfig;
 import dev.racel.dao.GroupDAO;
 import dev.racel.entity.GroupWaypoint;
+import dev.racel.entity.message.GetGroupWaypointsMessage;
 import dev.racel.entity.message.WaypointMessage;
 import dev.racel.handler.event.OrbitEventHandler;
 import dev.racel.session.Session;
@@ -38,5 +39,9 @@ public class UploadGroupWaypointEventHandler implements OrbitEventHandler<Waypoi
 
         groupDAO.addGroupWaypoint(waypoint);
         session.sendChat("Waypoint #" + waypointId + " has been uploaded");
+
+        // Update users' group waypoints list
+        new GetGroupWaypointsEventHandler().handle(session,
+                new GetGroupWaypointsMessage(data.getGroup()));
     }
 }
