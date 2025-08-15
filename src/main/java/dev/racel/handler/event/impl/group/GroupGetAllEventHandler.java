@@ -7,6 +7,7 @@ import dev.racel.entity.GroupRole;
 import dev.racel.entity.GroupWaypoint;
 import dev.racel.entity.message.GroupInfoMessage;
 import dev.racel.entity.message.GroupsMessage;
+import dev.racel.entity.message.WaypointMessage;
 import dev.racel.handler.event.OrbitEventHandler;
 import dev.racel.session.Session;
 import org.tinylog.Logger;
@@ -47,9 +48,19 @@ public class GroupGetAllEventHandler implements OrbitEventHandler<Object> {
             groupMembers.put(key, GroupRole.valueOf(groupDAO.getGroupRoleNameByMemberName(group.getId(), member)));
         }
         Map<GroupRole, List<GroupPermission>> rolePermission = GroupRole.getPredefinedPermissions();
-        //TODO: Finish schematics sharing and waypoints sharing
         Map<String, String> groupSchematics = groupDAO.getGroupSchematics(group.getId());
-        Map<String, GroupWaypoint> waypoints = new HashMap<>();
+        Map<String, WaypointMessage> waypoints = new HashMap<>();
+        var waypointList = groupDAO.getGroupWaypoints(groupName);
+        waypointList.forEach(waypoint -> {
+            waypoints.put(waypoint.getId(), new WaypointMessage(
+                    groupName,
+                    waypoint.getName(),
+                    waypoint.getX(),
+                    waypoint.getY(),
+                    waypoint.getZ(),
+                    waypoint.getServerIP()
+            ));
+        });
         List<String> logs = new ArrayList<>();
         return new GroupInfoMessage(
                 groupName, memberNames, groupMembers, rolePermission, groupSchematics, waypoints, logs
