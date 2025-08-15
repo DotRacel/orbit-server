@@ -7,6 +7,7 @@ import dev.racel.entity.GroupRole;
 import dev.racel.entity.message.MemberManageMessage;
 import dev.racel.handler.event.OrbitEventHandler;
 import dev.racel.session.Session;
+import org.tinylog.Logger;
 
 public class PromoteMemberEventHandler implements OrbitEventHandler<MemberManageMessage> {
     private final GroupDAO groupDAO = DbConfig.getInstance().getGroupDAO();
@@ -59,5 +60,7 @@ public class PromoteMemberEventHandler implements OrbitEventHandler<MemberManage
                 nextRole.toString());
 
         session.sendGroupChat(targetName + " has been promoted to " + targetRoleName);
+        Logger.info("User {} promoted {} to {} in group {}",
+                userName, targetName, targetRoleName, group.getGroupName());
     }
 }

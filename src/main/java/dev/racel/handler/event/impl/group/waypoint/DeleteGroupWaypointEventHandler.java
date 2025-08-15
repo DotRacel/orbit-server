@@ -6,6 +6,7 @@ import dev.racel.entity.message.DeleteGroupWaypointMessage;
 import dev.racel.entity.message.GetGroupWaypointsMessage;
 import dev.racel.handler.event.OrbitEventHandler;
 import dev.racel.session.Session;
+import org.tinylog.Logger;
 
 public class DeleteGroupWaypointEventHandler implements OrbitEventHandler<DeleteGroupWaypointMessage> {
     private final GroupDAO groupDAO = DbConfig.getInstance().getGroupDAO();
@@ -34,6 +35,9 @@ public class DeleteGroupWaypointEventHandler implements OrbitEventHandler<Delete
 
         groupDAO.removeGroupWaypointById(data.getGroup(), data.getWaypointId());
         session.sendChat("Waypoint #" + data.getWaypointId() + " is deleted");
+
+        Logger.info("User {} deleted group waypoint #{}",
+                userName, data.getWaypointId());
 
         // Update users' group waypoints list
         new GetGroupWaypointsEventHandler().handle(session,

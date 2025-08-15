@@ -6,6 +6,7 @@ import dev.racel.entity.GroupRole;
 import dev.racel.entity.message.GroupLeaveMessage;
 import dev.racel.handler.event.OrbitEventHandler;
 import dev.racel.session.Session;
+import org.tinylog.Logger;
 
 public class GroupDisbandEventHandler implements OrbitEventHandler<GroupLeaveMessage> {
     private final GroupDAO groupDAO = DbConfig.getInstance().getGroupDAO();
@@ -41,5 +42,6 @@ public class GroupDisbandEventHandler implements OrbitEventHandler<GroupLeaveMes
         groupDAO.removeGroup(group.getId());
 
         session.sendChat("The group has been disbanded!");
+        Logger.info("User {} disbanded group {}", userName, group.getGroupName());
     }
 }

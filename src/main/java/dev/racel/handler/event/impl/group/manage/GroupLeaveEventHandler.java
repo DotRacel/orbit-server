@@ -6,6 +6,7 @@ import dev.racel.entity.GroupRole;
 import dev.racel.entity.message.GroupLeaveMessage;
 import dev.racel.handler.event.OrbitEventHandler;
 import dev.racel.session.Session;
+import org.tinylog.Logger;
 
 public class GroupLeaveEventHandler implements OrbitEventHandler<GroupLeaveMessage> {
     private final GroupDAO groupDAO = DbConfig.getInstance().getGroupDAO();
@@ -40,5 +41,6 @@ public class GroupLeaveEventHandler implements OrbitEventHandler<GroupLeaveMessa
 
         groupDAO.removeGroupMember(group.getId(), userName);
         session.sendChat("You left the group.");
+        Logger.info("User {} left group {}", userName, group.getGroupName());
     }
 }

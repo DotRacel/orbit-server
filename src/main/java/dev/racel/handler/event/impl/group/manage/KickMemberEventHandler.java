@@ -6,6 +6,7 @@ import dev.racel.entity.GroupPermission;
 import dev.racel.entity.message.MemberManageMessage;
 import dev.racel.handler.event.OrbitEventHandler;
 import dev.racel.session.Session;
+import org.tinylog.Logger;
 
 public class KickMemberEventHandler implements OrbitEventHandler<MemberManageMessage> {
     private final GroupDAO groupDAO = DbConfig.getInstance().getGroupDAO();
@@ -43,5 +44,6 @@ public class KickMemberEventHandler implements OrbitEventHandler<MemberManageMes
         groupDAO.removeGroupMember(group.getId(), kickeeName);
 
         session.sendGroupChat(kickeeName + " was kicked by " + userName);
+        Logger.info("User {} was kicked by {} in group {}",  userName, kickeeName, group.getGroupName());
     }
 }

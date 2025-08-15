@@ -19,6 +19,6 @@ public class GroupInfoMessage {
     Map<Long, GroupRole> groupMembers;
     Map<GroupRole, List<GroupPermission>> rolePermission;
     Map<String, String> groupSchematics;
-    Map<String, GroupWaypoint> waypoints;
+    Map<String, WaypointMessage> waypoints;
     List<String> logs;
 }

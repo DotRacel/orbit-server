@@ -7,6 +7,7 @@ import dev.racel.entity.GroupRole;
 import dev.racel.entity.message.MemberManageMessage;
 import dev.racel.handler.event.OrbitEventHandler;
 import dev.racel.session.Session;
+import org.tinylog.Logger;
 
 public class DemoteMemberEventHandler implements OrbitEventHandler<MemberManageMessage> {
     private final GroupDAO groupDAO = DbConfig.getInstance().getGroupDAO();
@@ -58,5 +59,7 @@ public class DemoteMemberEventHandler implements OrbitEventHandler<MemberManageM
                 nextRole.toString());
 
         session.sendGroupChat(targetName + " has been demoted to " + targetRoleName);
+        Logger.info("User {} demoted {} to {} in group {}",
+                user, targetName, targetRole, group.getGroupName());
     }
 }

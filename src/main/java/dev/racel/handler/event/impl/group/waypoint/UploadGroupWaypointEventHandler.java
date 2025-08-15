@@ -8,6 +8,7 @@ import dev.racel.entity.message.WaypointMessage;
 import dev.racel.handler.event.OrbitEventHandler;
 import dev.racel.session.Session;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.tinylog.Logger;
 
 public class UploadGroupWaypointEventHandler implements OrbitEventHandler<WaypointMessage> {
     private final GroupDAO groupDAO = DbConfig.getInstance().getGroupDAO();
@@ -39,6 +40,8 @@ public class UploadGroupWaypointEventHandler implements OrbitEventHandler<Waypoi
 
         groupDAO.addGroupWaypoint(waypoint);
         session.sendChat("Waypoint #" + waypointId + " has been uploaded");
+        Logger.info("User {} uploaded group waypoint #{}",
+                session.getOrbitUser().getName(), waypointId);
 
         // Update users' group waypoints list
         new GetGroupWaypointsEventHandler().handle(session,

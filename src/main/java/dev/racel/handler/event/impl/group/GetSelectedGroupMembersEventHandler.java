@@ -31,5 +31,6 @@ public class GetSelectedGroupMembersEventHandler implements OrbitEventHandler<Ob
         Group group = groupDAO.getGroupByName(groupName).get();
         var members = groupDAO.getGroupMembersUuid(group.getId());
         session.sendMessage(getName(), new SelectedGroupMembersMessage(groupName, members));
+        Logger.info("User {} has fetched group {}'s member list", userName,  groupName);
     }
 }
