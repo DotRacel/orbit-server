@@ -2,6 +2,7 @@ package dev.racel.handler.event.impl.group.waypoint;
 
 import dev.racel.config.DbConfig;
 import dev.racel.dao.GroupDAO;
+import dev.racel.entity.message.GetGroupWaypointsMessage;
 import dev.racel.entity.message.GroupWaypointsMessage;
 import dev.racel.entity.message.WaypointMessage;
 import dev.racel.handler.event.OrbitEventHandler;
@@ -11,7 +12,7 @@ import org.tinylog.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GetGroupWaypointsEventHandler implements OrbitEventHandler<GetGroupWaypointsEventHandler> {
+public class GetGroupWaypointsEventHandler implements OrbitEventHandler<GetGroupWaypointsMessage> {
     private final GroupDAO groupDAO = DbConfig.getInstance().getGroupDAO();
 
     @Override
@@ -20,20 +21,20 @@ public class GetGroupWaypointsEventHandler implements OrbitEventHandler<GetGroup
     }
 
     @Override
-    public void handle(Session session, GetGroupWaypointsEventHandler data) {
+    public void handle(Session session, GetGroupWaypointsMessage data) {
         var userName = session.getOrbitUser().getName();
-        var groupNameOpt = groupDAO.getGroupByName(data.getName());
+        var groupNameOpt = groupDAO.getGroupByName(data.getGroup());
 
         if(groupNameOpt.isEmpty()){
-            session.sendChat("Group " + data.getName() + " does not exist");
+            session.sendChat("Group " + data.getGroup() + " does not exist");
             return;
         }
 
-        var waypointList = groupDAO.getGroupWaypoints(data.getName());
+        var waypointList = groupDAO.getGroupWaypoints(data.getGroup());
         Map<String, WaypointMessage> waypoints = new HashMap<>();
         waypointList.forEach(waypoint -> {
             waypoints.put(waypoint.getId(), new WaypointMessage(
-                    data.getName(),
+                    data.getGroup(),
                     waypoint.getName(),
                     waypoint.getX(),
                     waypoint.getY(),
@@ -44,12 +45,12 @@ public class GetGroupWaypointsEventHandler implements OrbitEventHandler<GetGroup
 
         session.sendMessage("groupWaypoints",
                 new GroupWaypointsMessage(
-                        data.getName(),
+                        data.getGroup(),
                         waypoints
                 ));
 
         Logger.info("User {} fetched group {} waypoints",
                 userName,
-                data.getName());
+                data.getGroup());
     }
 }
