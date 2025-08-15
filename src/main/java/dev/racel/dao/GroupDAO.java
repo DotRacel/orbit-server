@@ -4,6 +4,7 @@ import dev.racel.entity.Group;
 import dev.racel.entity.GroupWaypoint;
 import dev.racel.entity.message.WaypointMessage;
 import dev.racel.mapper.GroupMapper;
+import dev.racel.mapper.WaypointMapper;
 import org.jdbi.v3.sqlobject.config.KeyColumn;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 import org.jdbi.v3.sqlobject.config.ValueColumn;
@@ -98,6 +99,7 @@ public interface GroupDAO {
     void removeGroupWaypointById(String groupName, String waypointId);
 
     @SqlQuery("SELECT * FROM group_waypoints WHERE group_name = ?")
+    @RegisterRowMapper(WaypointMapper.class)
     List<GroupWaypoint> getGroupWaypoints(String groupName);
 
     @SqlQuery("SELECT * FROM groups WHERE group_name = ?")
