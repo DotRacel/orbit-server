@@ -55,10 +55,10 @@ public interface UserDAO {
             UPDATE users SET name = :user.name, 
                     purchase_id = :user.purchaseId,
                     hwid = :user.hwid,
-                    last_ign = :user.last_ign,
-                    last_uuid = :user.last_uuid,
-                    last_version = :user.last_version,
-                    selected_group = :user.selected_group
+                    last_ign = :user.lastIgn,
+                    last_uuid = :user.lastUUID,
+                    last_version = :user.lastVersion,
+                    selected_group = :user.selectedGroup
             WHERE name = :user.name""")
     void updateUser(@BindBean("user") OrbitUser user);
 }
